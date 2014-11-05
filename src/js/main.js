@@ -23,7 +23,9 @@ $(function() {
   updateLink();
   $(document).on('scroll', updateLink);
 
-  $('a[href*=#]:not([href=#])').click(function() {
+  $('a[href*=#]:not([href=#]).next-image').click(function() {
+    if ($(images[images.length-1]).visible()) return false;
+
     if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'') && location.hostname == this.hostname) {
       var target = $(this.hash);
       target = target.length ? target : $('[name=' + this.hash.slice(1) +']');
