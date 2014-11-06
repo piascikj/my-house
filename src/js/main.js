@@ -32,7 +32,7 @@ $(function() {
       if (target.length) {
         $('html,body').animate({
           scrollTop: target.offset().top
-        }, 3000, updateLink);
+        }, 2500, updateLink);
         return false;
       }
     }

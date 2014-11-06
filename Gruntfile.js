@@ -9,7 +9,7 @@ module.exports = function(grunt) {
   
   grunt.initConfig({
     clean: {
-      src: "dist"
+      src: ["dist/*", "!dist/.git"]
     },
 
     browserify: {
@@ -83,6 +83,21 @@ module.exports = function(grunt) {
       }
     },
 
+    buildcontrol: {
+      options: {
+        dir: 'dist',
+        commit: true,
+        push: true,
+        message: 'Built %sourceName% from commit %sourceCommit% on branch %sourceBranch%'
+      },
+      pages: {
+        options: {
+          remote: 'git@github.com:piascikj/my-house.git',
+          branch: 'gh-pages'
+        }
+      }
+    },
+
     watch: {
       js: {
         files: "src/**/*.js",
@@ -102,7 +117,9 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-build-control');
+
 
   grunt.registerTask('default', ['jshint', 'clean', 'browserify', 'copy']);
-  grunt.registerTask('dist', ['default', 'uglify']);  
+  grunt.registerTask('dist', ['default', 'uglify', 'buildcontrol']);  
 };

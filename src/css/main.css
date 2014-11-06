@@ -3,6 +3,23 @@ body, html, main {
     height: 100%;
 }
 
+.center {
+  margin-left: 50%;
+  float: none;
+}
+
+.navbar-header {
+  float: none;
+}
+
+.navbar {
+  min-height: 40px;
+}
+
+.navbar .fa-2x {
+  margin-top: .25em;
+}
+
 .btn {
   border: 2px solid #333;
   border-radius: 1px;
@@ -19,7 +36,7 @@ body, html, main {
 } 
 
 .cd-fixed-bg.cd-bg-1 {
-  background-image: url("../images/house01.jpg");
+  background-image: url("../images/house01-big.jpg");
 }
 
 .cd-fixed-bg.cd-bg-2 {
@@ -56,8 +73,7 @@ body, html, main {
   bottom: 0;
   text-align: center;
   width: 100%;
-  padding-top: 2em;
-  padding-bottom: 2em;
+  padding: 2em;
   min-height: 10%;
   color: #fff;
 }
@@ -98,4 +114,18 @@ h1 {
 p {
   font: 3em "Courier New", Courier, monospace;
   margin: .5em 0;
+}
+
+@media(max-width: 768px ){
+  h1 {
+    font: 400 50px/0.8 'Great Vibes', Helvetica, sans-serif;
+    color: #fff;
+    text-shadow: 4px 4px 3px rgba(0,0,0,0.1); 
+  }
+
+  p {
+    font: 1.5em "Courier New", Courier, monospace;
+    margin: .n5em 0;
+  }
+
 }
