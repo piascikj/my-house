@@ -1,0 +1,131 @@
+body, html, main {
+    /* important */
+    height: 100%;
+}
+
+.center {
+  margin-left: 50%;
+  float: none;
+}
+
+.navbar-header {
+  float: none;
+}
+
+.navbar {
+  min-height: 40px;
+}
+
+.navbar .fa-2x {
+  margin-top: .25em;
+}
+
+.btn {
+  border: 2px solid #333;
+  border-radius: 1px;
+  opacity: 1;
+}
+
+.cd-fixed-bg {
+    position: relative;
+    min-height: 100%;
+    background-size: cover;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-position: center center;
+} 
+
+.cd-fixed-bg.cd-bg-1 {
+  background-image: url("../images/house01-big.jpg");
+}
+
+.cd-fixed-bg.cd-bg-2 {
+  background-image: url("../images/barn01.jpg");
+}
+
+.cd-fixed-bg.cd-bg-3 {
+  background-image: url("../images/creek01.jpg");
+}
+
+.cd-fixed-bg.cd-bg-4 {
+  background-image: url("../img/cd-background-4.jpg");
+}
+ 
+.cd-scrolling-bg {
+    min-height: 100%;
+}
+
+.cd-scrolling-bg.cd-color-1 {
+  background-color: #3d3536;
+  color: #a6989a;
+}
+.cd-scrolling-bg.cd-color-2 {
+  background-color: #99a478;
+  color: #3d3536;
+}
+.cd-scrolling-bg.cd-color-3 {
+  background-color: #b4d7a8;
+  color: #3d3536;
+}
+
+.cd-intro {
+  position: absolute;
+  bottom: 0;
+  text-align: center;
+  width: 100%;
+  padding: 2em;
+  min-height: 10%;
+  color: #fff;
+}
+
+.cd-links {
+  position: fixed;
+  top: 0;
+  left: 0;
+  text-align: center;
+  width: 100%;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  min-height: 1em;
+  z-index:999;
+  background: #fff;
+}
+
+.dark-overlay {
+  opacity: .6;
+  background: #333;
+  color: #fff;
+}
+
+.dark-overlay a {
+  color: #fff;
+}
+
+.dark-overlay a:hover {
+  text-decoration: none;
+}
+
+h1 {
+  font: 400 100px/0.8 'Great Vibes', Helvetica, sans-serif;
+  color: #fff;
+  text-shadow: 4px 4px 3px rgba(0,0,0,0.1); 
+}
+
+p {
+  font: 3em "Courier New", Courier, monospace;
+  margin: .5em 0;
+}
+
+@media(max-width: 768px ){
+  h1 {
+    font: 400 50px/0.8 'Great Vibes', Helvetica, sans-serif;
+    color: #fff;
+    text-shadow: 4px 4px 3px rgba(0,0,0,0.1); 
+  }
+
+  p {
+    font: 1.5em "Courier New", Courier, monospace;
+    margin: .n5em 0;
+  }
+
+}
