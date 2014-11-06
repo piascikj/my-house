@@ -2,8 +2,6 @@
 
 var fs = require('fs');
 var path = require('path');
-//var glob = require('glob');
-//var stringify = require('stringify');
 
 module.exports = function(grunt) {
   
