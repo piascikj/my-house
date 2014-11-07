@@ -35,22 +35,50 @@ body, html, main {
     background-position: center center;
 } 
 
-.cd-fixed-bg.cd-bg-1 {
+.cd-fixed-bg.cd-bg-house {
   background-image: url("../images/house01-big.jpg");
 }
 
-.cd-fixed-bg.cd-bg-2 {
+.cd-fixed-bg.cd-bg-barn {
   background-image: url("../images/barn01.jpg");
 }
 
-.cd-fixed-bg.cd-bg-3 {
+.cd-fixed-bg.cd-bg-pasture {
+  background-image: url("../images/pasture01.jpg");
+}
+
+.cd-fixed-bg.cd-bg-kitchen {
+  background-image: url("../images/kitchen01.jpg");
+}
+ 
+.cd-fixed-bg.cd-bg-master {
+  background-image: url("../images/master01.jpg");
+}
+
+.cd-fixed-bg.cd-bg-living-room {
+  background-image: url("../images/living-room01.jpg");
+}
+
+.cd-fixed-bg.cd-bg-flowers {
+  background-image: url("../images/flowers01.jpg");
+}
+
+.cd-fixed-bg.cd-bg-wildlife {
+  background-image: url("../images/deer01.jpg");
+}
+
+.cd-fixed-bg.cd-bg-creek {
   background-image: url("../images/creek01.jpg");
 }
 
-.cd-fixed-bg.cd-bg-4 {
-  background-image: url("../img/cd-background-4.jpg");
+.cd-fixed-bg.cd-bg-animals {
+  background-image: url("../images/livestock01.jpg");
 }
- 
+
+.cd-fixed-bg.cd-bg-log-room {
+  background-image: url("../images/log-room01.jpg");
+}
+
 .cd-scrolling-bg {
     min-height: 100%;
 }
