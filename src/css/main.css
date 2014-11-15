@@ -36,7 +36,7 @@ body, html, main {
 } 
 
 .cd-fixed-bg.cd-bg-house {
-  background-image: url("../images/house01-big.jpg");
+  background-image: url("../images/house01.jpg");
 }
 
 .cd-fixed-bg.cd-bg-barn {
@@ -78,6 +78,27 @@ body, html, main {
 .cd-fixed-bg.cd-bg-log-room {
   background-image: url("../images/log-room01.jpg");
 }
+
+.cd-fixed-bg.cd-bg-fall {
+  background-image: url("../images/pasture02.jpg");
+}
+
+.cd-fixed-bg.cd-bg-trails {
+  background-image: url("../images/trails01.jpg");
+}
+
+.cd-fixed-bg.cd-bg-snow {
+  background-image: url("../images/snow01.jpg");
+}
+
+.cd-fixed-bg.cd-bg-tree {
+  background-image: url("../images/tree01.jpg");
+}
+
+.cd-fixed-bg.cd-bg-holiday {
+  background-image: url("../images/snow02.jpg");
+}
+
 
 .cd-scrolling-bg {
     min-height: 100%;
