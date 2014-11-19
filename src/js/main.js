@@ -58,16 +58,45 @@ $(function() {
     return false;
   });
 
-  $('.nav-menu-right').on('click', 'a', scroll);
+  $('.nav-menu-right').on('click', 'a', function(evt) {
+    $('.nav-menu-right').removeClass('nav-menu-open');
+    $('.nav-menu-right a').removeClass('active');
+    $(this).addClass('active');
+  });
 
   $('.cd-fixed-bg').each(function() {
     var id = $(this).attr('id');
-    var link = $('<a/>').attr('href', '#' + id).text(id);
+    var link = $('<a/>').attr('href', '#' + id).text(id.replace('-',' '));
     $('.nav-menu-right').append(link);
   });
 
   $('.pin').attr('href','//www.pinterest.com/pin/create/link/?' +
-                        'url=' + location.origin + '&' +
-                        'media=' + location.origin + '/images/house01.jpg' + '&' +
+                        'url=' + location.origin + location.pathname + '&' +
+                        'media=' + location.origin + location.pathname + 'images/house01.jpg' + '&' +
                         'description=36 acre farm for sale in south-west WI');
+
+  $('.tweet').attr('href', '//twitter.com/share?' +
+                           'url=' + location.origin + location.pathname + '&' +
+                           'text=Look at this beautiful country home in SW Wisconsin&' +
+                           'via=my_house_story');
+
+  $('.fb').attr('href', 'https://www.facebook.com/sharer/sharer.php?' +
+                        'u=' + location.origin + location.pathname);
+
+  $('.popup').click(function(event) {
+    var width  = 575,
+        height = 400,
+        left   = ($(window).width()  - width)  / 2,
+        top    = ($(window).height() - height) / 2,
+        url    = this.href,
+        opts   = 'status=1' +
+                 ',width='  + width  +
+                 ',height=' + height +
+                 ',top='    + top    +
+                 ',left='   + left;
+    
+    window.open(url, 'social', opts);
+ 
+    return false;
+  });
 });

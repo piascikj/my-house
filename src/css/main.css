@@ -175,12 +175,13 @@ body, html, main {
 .nav-menu a {
     display: block;
     color: #fff;
-    font-size: 1.1em;
+    font-size: 1.5em;
     font-weight: 300;
 }
  
 .nav-menu a:hover {
     background: #258ecd;
+    text-decoration: none;
 }
  
 .nav-menu a:active {
@@ -263,5 +264,9 @@ p {
   p {
     font-size: 1em;
     margin: .125em 0;
+  }
+
+  .schedule span {
+    display: none;
   }
 }
