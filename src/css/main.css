@@ -1,10 +1,12 @@
 body, html, main {
     /* important */
     height: 100%;
+    font-family: "Courier New", Courier, monospace;
 }
 
 .center {
-  margin-left: 50%;
+  margin-right: 50%;
+  margin-left: auto;
   float: none;
 }
 
@@ -12,8 +14,20 @@ body, html, main {
   float: none;
 }
 
+.navbar-header a {
+  text-transform: uppercase;  
+}
+
 .navbar {
   min-height: 40px;
+}
+
+.navbar a span {
+  font: 1.5em "Courier New", Courier, monospace;
+}
+
+.navbar.dark-overlay:hover {
+  opacity: .8;
 }
 
 .navbar .fa-2x {
@@ -127,21 +141,75 @@ body, html, main {
   color: #fff;
 }
 
-.cd-links {
+.nav-menu {
   position: fixed;
-  top: 0;
-  left: 0;
+  top: 40px;
   text-align: center;
-  width: 100%;
+  width: 400px;
   padding-top: 2px;
   padding-bottom: 2px;
-  min-height: 1em;
+  min-height: 25%;
   z-index:999;
-  background: #fff;
+  -webkit-transition: all 0.3s ease;
+  -moz-transition: all 0.3s ease;
+  transition: all 0.3s ease;
+  background: #333;
+  text-shadow: 2px 2px rgba(0,0,0,0.1);
+  color: #fff;
+  opacity: .8;
+  text-transform: uppercase; 
+}
+
+.nav-menu.dark-overlay:hover {
+  opacity: .8;
+}
+
+.nav-menu h3 {
+    color: #afdefa;
+    font-size: 1.9em;
+    padding: 20px;
+    margin: 0;
+    font-weight: 300;
+}
+ 
+.nav-menu a {
+    display: block;
+    color: #fff;
+    font-size: 1.1em;
+    font-weight: 300;
+}
+ 
+.nav-menu a:hover {
+    background: #258ecd;
+}
+ 
+.nav-menu a:active {
+    background: #afdefa;
+    color: #47a3da;
+}
+
+.nav-menu-left {
+    left: -400px;
+}
+ 
+.nav-menu-right {
+    right: -400px;
+}
+ 
+.nav-menu-left.nav-menu-open {
+    left: 0px;
+}
+ 
+.nav-menu-right.nav-menu-open {
+    right: 0px;
 }
 
 .dark-overlay {
   opacity: .6;
+  transition: opacity .5s ease-out;
+  -moz-transition: opacity .5s ease-out;
+  -webkit-transition: opacity .5s ease-out;
+  -o-transition: opacity .5s ease-out;
   background: #333;
   text-shadow: 2px 2px rgba(0,0,0,0.1);
   color: #fff;
@@ -149,10 +217,15 @@ body, html, main {
 
 .dark-overlay a {
   color: #fff;
+  margin: 0 3px;
 }
 
 .dark-overlay a:hover {
   text-decoration: none;
+}
+
+.dark-overlay.cd-intro:hover {
+  opacity: 0;
 }
 
 h1 {
@@ -162,7 +235,7 @@ h1 {
 }
 
 p {
-  font: 3em "Courier New", Courier, monospace;
+  font-size: 3em;
   margin: .5em 0;
 }
 
@@ -188,7 +261,7 @@ p {
   }
 
   p {
-    font: 1em "Courier New", Courier, monospace;
+    font-size: 1em;
     margin: .125em 0;
   }
 }

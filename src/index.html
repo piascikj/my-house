@@ -21,15 +21,24 @@
   <body>
     <nav class="navbar navbar-fixed-top dark-overlay" role="navigation">
       <div class="navbar-header">
-        <div class="pull-left">
-          <a href="#" title="Share" class="fb"><i class="fa fa-2x fa-facebook"></i></a>
-          <a href="#" title="Tweet" class="tweet"><i class="fa fa-2x fa-twitter"></i></a>
+        <div class="col-xs-4">
+          <a href="#" title="Schedule a viewing" class="schedule"><i class="fa fa-2x fa-calendar"></i><span>&nbsp; Schedule a viewing</span></a>
         </div>
-        <div class="center">
-          <a href="#" title="Previous image" class="prev-image"><i class="fa fa-2x fa-arrow-circle-o-up"></i></a>
+        <div class="col-xs-4 text-center">
+          <a href="#" title="Previous image" class="prev-image"><i class="fa fa-2x fa-arrow-circle-o-up"></i></a>&nbsp;
           <a href="#" title="Next image" class="next-image"><i class="fa fa-2x fa-arrow-circle-o-down"></i></a>
         </div>
+        <div class="col-xs-4 text-right">
+          <a href="#" title="Share" class="fb"><i class="fa fa-2x fa-facebook"></i></a>
+          <a href="#" title="Tweet" class="tweet"><i class="fa fa-2x fa-twitter"></i></a>
+          <a href="#" title="Pin" class="pin"><i class="fa fa-2x fa-pinterest"></i></a>
+          <a href="#" title="Navigate" class="navigate"><i class="fa fa-2x fa-bars"></i></a>
+        </div>
       </div>
+    </nav>
+
+    <nav class="nav-menu-right nav-menu">
+      <h3>Pages</h3>
     </nav>
     
     <div id="house" class="cd-fixed-bg cd-bg-house">
@@ -86,7 +95,7 @@
       </div>
     </div>
 
-    <div id="log-room" class="cd-fixed-bg cd-bg-log-room">
+    <div id="family-room" class="cd-fixed-bg cd-bg-log-room">
       <div class="cd-intro dark-overlay">
         <h1>Breathtaking Views</h1>
         <p>
@@ -153,7 +162,7 @@
       <div class="cd-intro dark-overlay">
         <h1>Winter Wonderland</h1>
         <p>
-          Put on pair of cross country skis or go for a snow mobbile ride.
+          Put on cross country skis or go for a snowmobile ride.
         </p>
       </div>
     </div>
@@ -169,12 +178,16 @@
 
     <div id="holiday" class="cd-fixed-bg cd-bg-holiday">
       <div class="cd-intro dark-overlay">
-        <h1>Make this your home for the Holidays</h1>
+        <h1>This Holiday,</h1>
+        <p>
+          Make this your home for every season!
+        </p>
       </div>
     </div>
 
-    <img style="opacity: 0;position: absolute;top:0; left:0" src="images/house01.jpg">
+    <img style="opacity: 0;position: absolute;top:0; left:0; width:25%; height:25%" src="images/house01.jpg">
 
+    <script type="text/javascript" src="//assets.pinterest.com/js/pinit.js"></script>
     <script src="js/main.js"></script>
   </body>
 </html>

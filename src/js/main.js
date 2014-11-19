@@ -13,28 +13,61 @@ $(function() {
     images.each(function(index) {
       if (!done && $(this).visible(true) && (index+1 < images.length)) {
         done = true;
-        var image = images[index+1];
-        var id = $(image).attr('id');
-        $('.next-image').attr('href', '#'+id);
+        var nextImage = images[index+1];
+        var nextId = $(nextImage).attr('id');
+        $('.next-image').attr('href', '#'+nextId);
+        
+        if (index > 0) {
+          var image = images[index-1];
+          var id = $(image).attr('id');
+          $('.prev-image').attr('href', '#'+id);
+        } 
       }
     });
   }
 
+  function scroll() {
+    var hash = this.hash;
+    var target = $(hash);
+    $('html,body').animate({
+      scrollTop: target.offset().top
+    }, 2000, function() {
+      location.hash = hash;
+    });
+    return false;
+  }
+
   updateLink();
+  
   $(document).on('scroll', updateLink);
 
-  $('a[href*=#]:not([href=#]).next-image').click(function() {
-    if ($(images[images.length-1]).visible()) return false;
 
-    if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'') && location.hostname == this.hostname) {
-      var target = $(this.hash);
-      target = target.length ? target : $('[name=' + this.hash.slice(1) +']');
-      if (target.length) {
-        $('html,body').animate({
-          scrollTop: target.offset().top
-        }, 2500, updateLink);
-        return false;
-      }
-    }
+
+  $('.next-image').click(function() {
+    if ($(images[images.length-1]).visible()) return false;
+    return scroll.call(this);
   });
+
+  $('.prev-image').click(function() {
+    if ($(images[0]).visible()) return false;
+    return scroll.call(this);
+  });
+
+  $('.navigate').click(function() {
+    $('.nav-menu-right').toggleClass('nav-menu-open');
+    return false;
+  });
+
+  $('.nav-menu-right').on('click', 'a', scroll);
+
+  $('.cd-fixed-bg').each(function() {
+    var id = $(this).attr('id');
+    var link = $('<a/>').attr('href', '#' + id).text(id);
+    $('.nav-menu-right').append(link);
+  });
+
+  $('.pin').attr('href','//www.pinterest.com/pin/create/link/?' +
+                        'url=' + location.origin + '&' +
+                        'media=' + location.origin + '/images/house01.jpg' + '&' +
+                        'description=36 acre farm for sale in south-west WI');
 });
