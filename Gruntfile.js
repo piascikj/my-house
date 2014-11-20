@@ -2,6 +2,7 @@
 
 var fs = require('fs');
 var path = require('path');
+var mozjpeg = require('imagemin-mozjpeg');
 
 module.exports = function(grunt) {
   
@@ -24,7 +25,7 @@ module.exports = function(grunt) {
         // This copies all the html, css and images into the dist/ folder
         expand: true,
         cwd: 'src/',
-        src: ['**/*.html', '**/*.css', 'images/**/*', "*.json", "*.js"],
+        src: ['**/*.html', '**/*.css', 'images/**/*', "*.json", "*.js", "*.ico"],
         dest: 'dist/',
       },
       bootstrap_css: {
@@ -48,10 +49,11 @@ module.exports = function(grunt) {
     },
 
     jshint: {
-      files: ['Gruntfile.js', 'app/js/**/*.js'],
+      files: ['Gruntfile.js', 'src/js/**/*.js'],
       options: {
         globalstrict: true,
         node: true,
+        validthis: true,
         globals: {
           jQuery: true,
           chrome: true,
@@ -61,7 +63,8 @@ module.exports = function(grunt) {
           document: true,
           window: false,
           escape: false,
-          unescape: false
+          unescape: false,
+          location: false
         }
       }
     },
@@ -77,6 +80,37 @@ module.exports = function(grunt) {
           src: ['**/*.js', '!**/*.min.js'],
           dest: 'dist/js',
           ext: '.min.js'
+        }]
+      }
+    },
+
+    imagemin: {
+      dynamic: {
+        options: {
+          optimizationLevel: 6,
+          progressive: true,
+          svgoPlugins: [{ removeViewBox: false }],
+          use: [mozjpeg()]
+        },
+        files: [{
+          expand: true,
+          cwd: 'dist/',
+          src: ['**/*.{png,jpg,gif}'],
+          dest: 'dist/'
+        }]
+      }
+    },
+
+    image_resize: {
+      resize: {
+        options: {
+          width: 1728,  // width: 1920,
+        },
+        files: [{
+          expand: true,
+          cwd: 'dist/',
+          src: ['**/*.{png,jpg,gif}'],
+          dest: 'dist/'
         }]
       }
     },
@@ -114,10 +148,12 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-browserify');
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.loadNpmTasks('grunt-contrib-imagemin');
+  grunt.loadNpmTasks('grunt-image-resize');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-build-control');
 
 
-  grunt.registerTask('default', ['jshint', 'clean', 'browserify', 'copy']);
+  grunt.registerTask('default', ['jshint', 'clean', 'browserify', 'copy', 'image_resize', 'imagemin']);
   grunt.registerTask('dist', ['default', 'uglify', 'buildcontrol']);  
 };
