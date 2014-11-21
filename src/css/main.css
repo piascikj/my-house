@@ -196,6 +196,17 @@ body, html, main {
 .nav-menu-right {
     right: -400px;
 }
+
+.nav-menu-right-icons {
+    right: -48px;
+    width: 48px;
+    min-height: 15%;
+}
+
+.nav-menu-right-icons i {
+  font-size: 1.5em;
+}
+
  
 .nav-menu-left.nav-menu-open {
     left: 0px;
@@ -203,6 +214,10 @@ body, html, main {
  
 .nav-menu-right.nav-menu-open {
     right: 0px;
+}
+
+.nav-menu-right-icons.nav-menu-open {
+  right: 0px;
 }
 
 .dark-overlay {
@@ -227,6 +242,14 @@ body, html, main {
 
 .dark-overlay.cd-intro:hover {
   opacity: 0;
+}
+
+.display-small {
+  display: none;
+}
+
+nav.hide-small {
+  display: inline;
 }
 
 h1 {
@@ -267,6 +290,14 @@ p {
   }
 
   .schedule span {
+    display: none;
+  }
+
+  a.display-small {
+    display: inline;
+  }
+
+  nav.hide-small {
     display: none;
   }
 }
