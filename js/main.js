@@ -11422,7 +11422,7 @@ $(function() {
   $(document).on('scroll', updateLink);
 
 
-
+  // Pic scrolling
   $('.next-image').click(function() {
     if ($(images[images.length-1]).visible()) return false;
     return scroll.call(this);
@@ -11433,23 +11433,41 @@ $(function() {
     return scroll.call(this);
   });
 
-  $('.navigate').click(function() {
-    $('.nav-menu-right').toggleClass('nav-menu-open');
-    return false;
-  });
-
-  $('.nav-menu-right').on('click', 'a', function(evt) {
-    $('.nav-menu-right').removeClass('nav-menu-open');
-    $('.nav-menu-right a').removeClass('active');
-    $(this).addClass('active');
-  });
-
+  // Pics menu
   $('.cd-fixed-bg').each(function() {
     var id = $(this).attr('id');
     var link = $('<a/>').attr('href', '#' + id).text(id.replace('-',' '));
-    $('.nav-menu-right').append(link);
+    $('.pics-menu').append(link);
   });
 
+  $('.navigate').click(function() {
+    $('.pics-menu').toggleClass('nav-menu-open');
+    $('.share-menu-small').removeClass('nav-menu-open');
+    return false;
+  });
+
+  $('.pics-menu').on('click', 'a', function(evt) {
+    $('.pics-menu').removeClass('nav-menu-open');
+  });
+
+  // Share menu
+  $('.share-menu-normal a').each(function() {
+    $(".share-menu-small").append($(this).clone());
+  });
+
+  $('.share').click(function() {
+    $('.share-menu-small').toggleClass('nav-menu-open');
+    $('.pics-menu').removeClass('nav-menu-open');
+    return false;
+  });
+
+  $('.share-menu-small').on('click', 'a', function(evt) {
+    $('.share-menu-small').removeClass('nav-menu-open');
+    console.log("ha");
+  });
+
+
+  // Share buttons
   $('.pin').attr('href','//www.pinterest.com/pin/create/link/?' +
                         'url=' + location.origin + location.pathname + '&' +
                         'media=' + location.origin + location.pathname + 'images/house01.jpg' + '&' +
