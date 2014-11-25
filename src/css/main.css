@@ -145,10 +145,12 @@ body, html, main {
   position: fixed;
   top: 40px;
   text-align: center;
-  width: 400px;
+  width: 380px;
   padding-top: 2px;
   padding-bottom: 2px;
   min-height: 25%;
+  max-height: 100%;
+  overflow-y: auto;
   z-index:999;
   -webkit-transition: all 0.3s ease;
   -moz-transition: all 0.3s ease;
@@ -190,11 +192,11 @@ body, html, main {
 }
 
 .nav-menu-left {
-    left: -400px;
+    left: -380px;
 }
  
 .nav-menu-right {
-    right: -400px;
+    right: -380px;
 }
 
 .nav-menu-right-icons {
@@ -265,14 +267,26 @@ p {
 
 @media(max-width: 768px ){
   h1 {
-    font: 400 50px/0.8 'Great Vibes', Helvetica, sans-serif;
+    font: 400 35px/0.8 'Great Vibes', Helvetica, sans-serif;
     color: #fff;
     text-shadow: 4px 4px 3px rgba(0,0,0,0.1); 
   }
 
   p {
-    font: 1.5em "Courier New", Courier, monospace;
-    margin: .5em 0;
+    font: 1.25em "Courier New", Courier, monospace;
+    margin: .25em 0;
+  }
+
+  .contact span {
+    display: none;
+  }
+
+  a.display-small {
+    display: inline;
+  }
+
+  nav.hide-small {
+    display: none;
   }
 
 }
@@ -287,17 +301,5 @@ p {
   p {
     font-size: 1em;
     margin: .125em 0;
-  }
-
-  .schedule span {
-    display: none;
-  }
-
-  a.display-small {
-    display: inline;
-  }
-
-  nav.hide-small {
-    display: none;
   }
 }

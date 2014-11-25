@@ -3,6 +3,8 @@
 var fs = require('fs');
 var path = require('path');
 var mozjpeg = require('imagemin-mozjpeg');
+var envify = require('envify');
+process.env.NODE_ENV = "development";
 
 module.exports = function(grunt) {
   
@@ -16,7 +18,10 @@ module.exports = function(grunt) {
         // A single entry point for our app
         src: ['src/js/main.js'],
         // Compile to a single file to add a script tag for in your HTML
-        dest: 'dist/js/main.js'
+        dest: 'dist/js/main.js',
+        options: {
+          transform: ['envify']
+        }
       }
     },
     
@@ -154,6 +159,10 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-build-control');
 
 
+  grunt.registerTask('prod_env',  function() {
+    process.env.NODE_ENV = "production";
+  });
+  
   grunt.registerTask('default', ['jshint', 'clean', 'browserify', 'copy', 'image_resize', 'imagemin']);
-  grunt.registerTask('dist', ['default', 'uglify', 'buildcontrol']);  
+  grunt.registerTask('dist', ['prod_env', 'default', 'uglify', 'buildcontrol']);  
 };
