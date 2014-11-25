@@ -82,6 +82,14 @@ $(function() {
   }
 
   updateLink();
+  var subject = encodeURIComponent("4476 Plank Rd. Highland, WI");
+  var body = encodeURIComponent("I saw this property on the my-house site.");
+  var mailto = 'mailto:nicole@nicolecharles.com?' +
+               'subject=' + subject +
+               '&body=' + body +
+               '&cc=' + 'myhouse@piascik.net';
+
+  $('.contact').attr('href', mailto);
   
   $(document).on('scroll', updateLink);
 
