@@ -311,6 +311,20 @@ nav.hide-small {
   margin: .5em 0;
 }
 
+@media (max-device-width: 800px) and (orientation: portrait) {  
+  a.display-small {
+    display: inline;
+  }
+
+  nav.hide-small {
+    display: none;
+  }
+}
+
+@media (max-device-width: 1280px) and (orientation: landscape) { 
+
+}
+
 @media(max-width: 768px ){
   .cd-intro h1 {
     font: 400 35px/0.8 'Great Vibes', Helvetica, sans-serif;
