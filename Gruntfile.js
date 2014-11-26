@@ -169,7 +169,7 @@ module.exports = function(grunt) {
       },
 
       haml: {
-        files: ["src/*.haml"],
+        files: ["src/**/*.haml"],
         tasks: ["haml"]
       }
     }
