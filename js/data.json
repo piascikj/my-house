@@ -1,0 +1,172 @@
+{
+   "$": {
+      "xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+      "xsi:schemaLocation": "http://www.zillow.com/static/xsd/SearchResults.xsd http://www.zillowstatic.com/vstatic/f056c2f/static/xsd/SearchResults.xsd",
+      "xmlns:SearchResults": "http://www.zillow.com/static/xsd/SearchResults.xsd"
+   },
+   "request": [
+      {
+         "address": [
+            "4476 Plank Rd."
+         ],
+         "citystatezip": [
+            "Highland, WI 53543"
+         ]
+      }
+   ],
+   "message": [
+      {
+         "text": [
+            "Request successfully processed"
+         ],
+         "code": [
+            "0"
+         ]
+      }
+   ],
+   "response": [
+      {
+         "results": [
+            {
+               "result": [
+                  {
+                     "zpid": [
+                        "2104899521"
+                     ],
+                     "links": [
+                        {
+                           "homedetails": [
+                              "http://www.zillow.com/homedetails/4476-Plank-Rd-Highland-WI-53543/2104899521_zpid/"
+                           ],
+                           "mapthishome": [
+                              "http://www.zillow.com/homes/2104899521_zpid/"
+                           ],
+                           "comparables": [
+                              "http://www.zillow.com/homes/comps/2104899521_zpid/"
+                           ]
+                        }
+                     ],
+                     "address": [
+                        {
+                           "street": [
+                              "4476 Plank Rd"
+                           ],
+                           "zipcode": [
+                              "53543"
+                           ],
+                           "city": [
+                              "Highland"
+                           ],
+                           "state": [
+                              "WI"
+                           ],
+                           "latitude": [
+                              "43.032138"
+                           ],
+                           "longitude": [
+                              "-90.283103"
+                           ]
+                        }
+                     ],
+                     "FIPScounty": [
+                        ""
+                     ],
+                     "useCode": [
+                        "SingleFamily"
+                     ],
+                     "yearBuilt": [
+                        "1873"
+                     ],
+                     "lotSizeSqFt": [
+                        "1479733"
+                     ],
+                     "finishedSqFt": [
+                        "3627"
+                     ],
+                     "bathrooms": [
+                        "4.0"
+                     ],
+                     "bedrooms": [
+                        "4"
+                     ],
+                     "zestimate": [
+                        {
+                           "amount": [
+                              {
+                                 "_": "290794",
+                                 "$": {
+                                    "currency": "USD"
+                                 }
+                              }
+                           ],
+                           "last-updated": [
+                              "11/25/2014"
+                           ],
+                           "oneWeekChange": [
+                              {
+                                 "$": {
+                                    "deprecated": "true"
+                                 }
+                              }
+                           ],
+                           "valueChange": [
+                              ""
+                           ],
+                           "valuationRange": [
+                              {
+                                 "low": [
+                                    {
+                                       "_": "209372",
+                                       "$": {
+                                          "currency": "USD"
+                                       }
+                                    }
+                                 ],
+                                 "high": [
+                                    {
+                                       "_": "331505",
+                                       "$": {
+                                          "currency": "USD"
+                                       }
+                                    }
+                                 ]
+                              }
+                           ],
+                           "percentile": [
+                              "0"
+                           ]
+                        }
+                     ],
+                     "localRealEstate": [
+                        {
+                           "region": [
+                              {
+                                 "$": {
+                                    "id": "32031",
+                                    "type": "city",
+                                    "name": "Highland"
+                                 },
+                                 "links": [
+                                    {
+                                       "overview": [
+                                          "http://www.zillow.com/local-info/WI-Highland/r_32031/"
+                                       ],
+                                       "forSaleByOwner": [
+                                          "http://www.zillow.com/highland-wi/fsbo/"
+                                       ],
+                                       "forSale": [
+                                          "http://www.zillow.com/highland-wi/"
+                                       ]
+                                    }
+                                 ]
+                              }
+                           ]
+                        }
+                     ]
+                  }
+               ]
+            }
+         ]
+      }
+   ]
+}

@@ -20996,20 +20996,24 @@ $(function() {
   var visit_id = crypto.randomBytes(20).toString('hex');
 
   function addEvent(evt, data, cb) {
-    data.session = getSessionId();
-    data.host = location.hostname;
-    data.visit_id = visit_id;
-    data.event = evt;
+    cb = cb || function(){};
+    // Remove this to send events in dev
+    if ("production" === "production") {
+      data.session = getSessionId();
+      data.host = location.hostname;
+      data.visit_id = visit_id;
+      data.event = evt;
 
-    cb = cb || function(err, res) {
-        if (err) {
-            console.log("Oh no, an error!");
-        } else {
-            console.log("Hooray, it worked!");
-        }
-    };
-    
-    client.addEvent("web", data, cb);
+      cb = cb || function(err, res) {
+          if (err) {
+              console.log("Oh no, an error!");
+          } else {
+              console.log("Hooray, it worked!");
+          }
+      };
+      
+      client.addEvent("web", data, cb);
+    } else cb();
   }
 
   function addClickEvent(el, cb) {
@@ -21120,6 +21124,11 @@ $(function() {
     addClickEvent('contact');
   });
 
+  $('.info').click(function() {
+    openMenu('.info-menu');
+    return false;
+  });
+
   // Share menu
   $('.share-menu-normal a').each(function() {
     $(".share-menu-small").append($(this).clone());
@@ -21166,6 +21175,10 @@ $(function() {
     window.open(url, 'social', opts);
  
     return false;
+  });
+
+  $(".cd-fixed-bg").click(function() {
+    hideAllMenus();
   });
 });
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
