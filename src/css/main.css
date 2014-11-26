@@ -312,6 +312,20 @@ nav.hide-small {
 }
 
 @media (max-device-width: 800px) and (orientation: portrait) {  
+  .cd-info h1 {
+    font: 400 25px/0.8 'Great Vibes', Helvetica, sans-serif;
+    color: #fff;
+    text-shadow: 4px 4px 3px rgba(0,0,0,0.1); 
+  }
+
+  .cd-info p {
+    font-size: 1em;
+    margin: .125em 0;
+  }
+  .contact span {
+    display: none;
+  }
+
   a.display-small {
     display: inline;
   }
@@ -319,10 +333,159 @@ nav.hide-small {
   nav.hide-small {
     display: none;
   }
+
+  .cd-fixed-bg.cd-bg-house {
+    background-image: url("../images/small/house01.jpg");
+  }
+
+  .cd-fixed-bg.cd-bg-barn {
+    background-image: url("../images/small/barn01.jpg");
+  }
+
+  .cd-fixed-bg.cd-bg-pasture {
+    background-image: url("../images/small/pasture01.jpg");
+  }
+
+  .cd-fixed-bg.cd-bg-kitchen {
+    background-image: url("../images/small/kitchen01.jpg");
+  }
+   
+  .cd-fixed-bg.cd-bg-master {
+    background-image: url("../images/small/master01.jpg");
+  }
+
+  .cd-fixed-bg.cd-bg-living-room {
+    background-image: url("../images/small/living-room01.jpg");
+  }
+
+  .cd-fixed-bg.cd-bg-flowers {
+    background-image: url("../images/small/flowers01.jpg");
+  }
+
+  .cd-fixed-bg.cd-bg-wildlife {
+    background-image: url("../images/small/deer01.jpg");
+  }
+
+  .cd-fixed-bg.cd-bg-creek {
+    background-image: url("../images/small/creek01.jpg");
+  }
+
+  .cd-fixed-bg.cd-bg-animals {
+    background-image: url("../images/small/livestock01.jpg");
+  }
+
+  .cd-fixed-bg.cd-bg-log-room {
+    background-image: url("../images/small/log-room01.jpg");
+  }
+
+  .cd-fixed-bg.cd-bg-fall {
+    background-image: url("../images/small/pasture02.jpg");
+  }
+
+  .cd-fixed-bg.cd-bg-trails {
+    background-image: url("../images/small/trails01.jpg");
+  }
+
+  .cd-fixed-bg.cd-bg-snow {
+    background-image: url("../images/small/snow01.jpg");
+  }
+
+  .cd-fixed-bg.cd-bg-tree {
+    background-image: url("../images/small/tree01.jpg");
+  }
+
+  .cd-fixed-bg.cd-bg-holiday {
+    background-image: url("../images/small/snow02.jpg");
+  }
 }
 
 @media (max-device-width: 1280px) and (orientation: landscape) { 
+  .cd-intro h1 {
+    font: 400 35px/0.8 'Great Vibes', Helvetica, sans-serif;
+    color: #fff;
+    text-shadow: 4px 4px 3px rgba(0,0,0,0.1); 
+  }
 
+  .cd-intro p {
+    font-size: 1.25em;
+    margin: .25em 0;
+  }
+
+  .contact span {
+    display: none;
+  }
+
+  a.display-small {
+    display: inline;
+  }
+
+  nav.hide-small {
+    display: none;
+  }
+
+  .cd-fixed-bg.cd-bg-house {
+    background-image: url("../images/small/house01.jpg");
+  }
+
+  .cd-fixed-bg.cd-bg-barn {
+    background-image: url("../images/small/barn01.jpg");
+  }
+
+  .cd-fixed-bg.cd-bg-pasture {
+    background-image: url("../images/small/pasture01.jpg");
+  }
+
+  .cd-fixed-bg.cd-bg-kitchen {
+    background-image: url("../images/small/kitchen01.jpg");
+  }
+   
+  .cd-fixed-bg.cd-bg-master {
+    background-image: url("../images/small/master01.jpg");
+  }
+
+  .cd-fixed-bg.cd-bg-living-room {
+    background-image: url("../images/small/living-room01.jpg");
+  }
+
+  .cd-fixed-bg.cd-bg-flowers {
+    background-image: url("../images/small/flowers01.jpg");
+  }
+
+  .cd-fixed-bg.cd-bg-wildlife {
+    background-image: url("../images/small/deer01.jpg");
+  }
+
+  .cd-fixed-bg.cd-bg-creek {
+    background-image: url("../images/small/creek01.jpg");
+  }
+
+  .cd-fixed-bg.cd-bg-animals {
+    background-image: url("../images/small/livestock01.jpg");
+  }
+
+  .cd-fixed-bg.cd-bg-log-room {
+    background-image: url("../images/small/log-room01.jpg");
+  }
+
+  .cd-fixed-bg.cd-bg-fall {
+    background-image: url("../images/small/pasture02.jpg");
+  }
+
+  .cd-fixed-bg.cd-bg-trails {
+    background-image: url("../images/small/trails01.jpg");
+  }
+
+  .cd-fixed-bg.cd-bg-snow {
+    background-image: url("../images/small/snow01.jpg");
+  }
+
+  .cd-fixed-bg.cd-bg-tree {
+    background-image: url("../images/small/tree01.jpg");
+  }
+
+  .cd-fixed-bg.cd-bg-holiday {
+    background-image: url("../images/small/snow02.jpg");
+  }
 }
 
 @media(max-width: 768px ){
@@ -348,6 +511,71 @@ nav.hide-small {
   nav.hide-small {
     display: none;
   }
+
+  .cd-fixed-bg.cd-bg-house {
+    background-image: url("../images/small/house01.jpg");
+  }
+
+  .cd-fixed-bg.cd-bg-barn {
+    background-image: url("../images/small/barn01.jpg");
+  }
+
+  .cd-fixed-bg.cd-bg-pasture {
+    background-image: url("../images/small/pasture01.jpg");
+  }
+
+  .cd-fixed-bg.cd-bg-kitchen {
+    background-image: url("../images/small/kitchen01.jpg");
+  }
+   
+  .cd-fixed-bg.cd-bg-master {
+    background-image: url("../images/small/master01.jpg");
+  }
+
+  .cd-fixed-bg.cd-bg-living-room {
+    background-image: url("../images/small/living-room01.jpg");
+  }
+
+  .cd-fixed-bg.cd-bg-flowers {
+    background-image: url("../images/small/flowers01.jpg");
+  }
+
+  .cd-fixed-bg.cd-bg-wildlife {
+    background-image: url("../images/small/deer01.jpg");
+  }
+
+  .cd-fixed-bg.cd-bg-creek {
+    background-image: url("../images/small/creek01.jpg");
+  }
+
+  .cd-fixed-bg.cd-bg-animals {
+    background-image: url("../images/small/livestock01.jpg");
+  }
+
+  .cd-fixed-bg.cd-bg-log-room {
+    background-image: url("../images/small/log-room01.jpg");
+  }
+
+  .cd-fixed-bg.cd-bg-fall {
+    background-image: url("../images/small/pasture02.jpg");
+  }
+
+  .cd-fixed-bg.cd-bg-trails {
+    background-image: url("../images/small/trails01.jpg");
+  }
+
+  .cd-fixed-bg.cd-bg-snow {
+    background-image: url("../images/small/snow01.jpg");
+  }
+
+  .cd-fixed-bg.cd-bg-tree {
+    background-image: url("../images/small/tree01.jpg");
+  }
+
+  .cd-fixed-bg.cd-bg-holiday {
+    background-image: url("../images/small/snow02.jpg");
+  }
+
 
 }
 

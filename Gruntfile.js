@@ -120,7 +120,7 @@ module.exports = function(grunt) {
     image_resize: {
       resize: {
         options: {
-          width: 1728,  // width: 1920,
+          width: 1728,
         },
         files: [{
           expand: true,
@@ -128,6 +128,17 @@ module.exports = function(grunt) {
           src: ['**/*.{png,jpg,gif}'],
           dest: 'dist/'
         }]
+      },
+      small: {
+        options: {
+          width: 800,
+        },
+        files: [{
+          expand: true,
+          cwd: 'dist/images',
+          src: ['**/*.{png,jpg,gif}'],
+          dest: 'dist/images/small'
+        }]        
       }
     },
 
@@ -193,6 +204,6 @@ module.exports = function(grunt) {
     });
   });
   
-  grunt.registerTask('default', ['jshint', 'clean', 'browserify', 'copy', 'haml', 'image_resize', 'imagemin', 'zillow']);
-  grunt.registerTask('dist', ['prod_env', 'default', 'uglify', 'buildcontrol']);  
+  grunt.registerTask('default', ['jshint', 'clean', 'browserify', 'copy', 'uglify', 'haml', 'image_resize', 'imagemin', 'zillow']);
+  grunt.registerTask('dist', ['prod_env', 'default', 'buildcontrol']);  
 };
