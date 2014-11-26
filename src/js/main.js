@@ -25,6 +25,7 @@ $(function() {
   var visit_id = crypto.randomBytes(20).toString('hex');
 
   function addEvent(evt, data, cb) {
+    cb = cb || function(){};
     // Remove this to send events in dev
     if (process.env.NODE_ENV === "production") {
       data.session = getSessionId();
@@ -203,5 +204,9 @@ $(function() {
     window.open(url, 'social', opts);
  
     return false;
+  });
+
+  $(".cd-fixed-bg").click(function() {
+    hideAllMenus();
   });
 });

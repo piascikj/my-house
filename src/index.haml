@@ -11,6 +11,7 @@
     %link{rel: "stylesheet", href: "css/font-awesome.min.css"}
     %link{rel: "stylesheet", href: "css/main.css"}
     %link{rel: "stylesheet", href: "http://fonts.googleapis.com/css?family=Great+Vibes", type:"text/css"}
+    %link{rel: "stylesheet", href: "http://fonts.googleapis.com/css?family=Open+Sans:400italic,400,700", type:"text/css"}
   %body
     %nav.navbar.navbar-fixed-top.dark-overlay{role: "navigation"}
       .navbar-header
@@ -137,23 +138,33 @@
 
     #holiday.cd-fixed-bg.cd-bg-holiday
       .cd-intro.dark-overlay
-        %h 1This Holiday,
+        %h1 1This Holiday,
         %p Make this your home for every season!
 
-    #area-information.cd-fixed-bg
-      .cd-content.container-fluid.dark-overlay
+    #area-information.cd-fixed-bg.cd-bg-content
+      .cd-content.container-fluid
         .main
           %h1 Area Information
-          .col-xs-6
-            %h2 Otter Creek
-            .col-xs-8.col-xs-offset-4
-              %li World Class Fly Fishing
-          .col-xs-6
-            %h2 Black Hawk Lake Recreation Area
-          .col-xs-6
-            %h2 Shake Rag Alley &amp; Pendarvis
-          .col-xs-6
-            %h2 Folklore Village
+          .col-xs-12.cd-sm-6
+            %h2 Camping, Hiking, Fishing and Hunting
+            .col-xs-10.col-xs-offset-1.col-sm-8.col-sm-offset-2
+              %p If you love the outdoors you'll be right at home.  With these gems right in your backyard!
+              %li 
+                %a{href:"http://dnr.wi.gov/topic/fishing/trout/viewer/iowa.html"} Otter Creek World Class Fly Fishing 
+              %li
+                %a{href:"http://www.blackhawklake.com/Home.html"} Camping, Hiking, Fishing and Hunting at Black Hawk Lake Recreation Area
+          .col-xs-12.cd-sm-6
+            %h2 Artist Community
+            .col-xs-10.col-xs-offset-1.col-sm-8.col-sm-offset-2
+              %p The property is conveniently located in a prospering Artist community with Mineral Point and Spring Green just minutes away.
+              %li 
+                %a{href:"http://ottercreekarts.com/"} Otter Creek Arts
+              %li 
+                %a{href:"http://mineralpoint.com/"} Mineral Point - History and Art combine at this popular tourist destination
+              %li 
+                %a{href:"http://www.springgreen.com/"} Spring Green - Set on the Wisconsin river it's well known for performing and visual arts 
+              %li 
+                %a{href:"http://folklorevillage.com/"} Folk Lore Village - Carrying on the traditions of the past in a beautiful prarie setting.
     %img{style:"opacity: 0;position: absolute;top:0; left:0; width:25%; height:25%", src:"images/house01.jpg"}
 
     %script{type:"text/javascript", src:"//assets.pinterest.com/js/pinit.js"}

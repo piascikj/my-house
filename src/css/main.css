@@ -1,7 +1,7 @@
 body, html, main {
-    /* important */
-    height: 100%;
-    font-family: "Courier New", Courier, monospace;
+  /* important */
+  height: 100%;
+  font-family: 'Open Sans', sans-serif;
 }
 
 .center {
@@ -31,7 +31,7 @@ body, html, main {
 }
 
 .navbar a span {
-  font: 1.5em "Courier New", Courier, monospace;
+  font-size: 1.5em;
 }
 
 .navbar.dark-overlay:hover {
@@ -49,12 +49,12 @@ body, html, main {
 }
 
 .cd-fixed-bg {
-    position: relative;
-    min-height: 100%;
-    background-size: cover;
-    background-attachment: fixed;
-    background-repeat: no-repeat;
-    background-position: center center;
+  position: relative;
+  min-height: 100%;
+  background-size: cover;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-position: center center;
 }
 
 .cd-fixed-bg.cd-bg-house {
@@ -157,7 +157,8 @@ body, html, main {
   height: 100%;
   padding: 2em;
   min-height: 10%;
-  color: #fff;
+  color: #333;
+  font-size: 1.5em;
 }
 
 .cd-content .main {
@@ -166,6 +167,11 @@ body, html, main {
 
 .cd-content li {
   text-align: left;
+}
+
+.cd-content p {
+  text-align: left;
+  font-style: italic;
 }
 
 .nav-menu {
@@ -294,26 +300,26 @@ nav.hide-small {
   display: inline;
 }
 
-h1 {
+.cd-intro h1 {
   font: 400 100px/0.8 'Great Vibes', Helvetica, sans-serif;
   color: #fff;
   text-shadow: 4px 4px 3px rgba(0,0,0,0.1); 
 }
 
-p {
-  font-size: 3em;
+.cd-intro p {
+  font: 3em "Courier New", Courier, monospace;
   margin: .5em 0;
 }
 
 @media(max-width: 768px ){
-  h1 {
+  .cd-intro h1 {
     font: 400 35px/0.8 'Great Vibes', Helvetica, sans-serif;
     color: #fff;
     text-shadow: 4px 4px 3px rgba(0,0,0,0.1); 
   }
 
-  p {
-    font: 1.25em "Courier New", Courier, monospace;
+  .cd-intro p {
+    font-size: 1.25em;
     margin: .25em 0;
   }
 
@@ -332,13 +338,13 @@ p {
 }
 
 @media screen and (max-width : 640px){
-  h1 {
+  .cd-info h1 {
     font: 400 25px/0.8 'Great Vibes', Helvetica, sans-serif;
     color: #fff;
     text-shadow: 4px 4px 3px rgba(0,0,0,0.1); 
   }
 
-  p {
+  .cd-info p {
     font-size: 1em;
     margin: .125em 0;
   }
