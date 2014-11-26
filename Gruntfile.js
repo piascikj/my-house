@@ -4,7 +4,9 @@ var fs = require('fs');
 var path = require('path');
 var mozjpeg = require('imagemin-mozjpeg');
 var envify = require('envify');
+var Zillow = require('node-zillow');
 process.env.NODE_ENV = "development";
+var zwsid = "X1-ZWz1b18wrlizgr_14qhc";
 
 module.exports = function(grunt) {
   
@@ -70,6 +72,15 @@ module.exports = function(grunt) {
           escape: false,
           unescape: false,
           location: false
+        }
+      }
+    },
+    
+    haml: {
+      // compile individually into dest, maintaining folder structure
+      main: {
+        files: {
+          "dist/index.html": "src/index.haml"
         }
       }
     },
@@ -144,6 +155,11 @@ module.exports = function(grunt) {
       other: {
         files: ["src/**/*.css", "src/**/*.html"],
         tasks: ["copy"]
+      },
+
+      haml: {
+        files: ["src/*.haml"],
+        tasks: ["haml"]
       }
     }
   });
@@ -156,13 +172,27 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-imagemin');
   grunt.loadNpmTasks('grunt-image-resize');
   grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-haml');
   grunt.loadNpmTasks('grunt-build-control');
 
 
   grunt.registerTask('prod_env',  function() {
     process.env.NODE_ENV = "production";
   });
+
+  grunt.registerTask('zillow', function() {
+    var done = this.async();
+    var zillow = new Zillow(zwsid);
+    zillow.getDeepSearchResults({
+      address: '4476 Plank Rd.',
+      city: 'Highland',
+      state: 'WI',
+      zip: '53543'
+    }).then(function(result) {
+      fs.writeFile('dist/js/data.json', JSON.stringify(result, null, 3), done);
+    });
+  });
   
-  grunt.registerTask('default', ['jshint', 'clean', 'browserify', 'copy', 'image_resize', 'imagemin']);
+  grunt.registerTask('default', ['jshint', 'clean', 'browserify', 'copy', 'haml', 'image_resize', 'imagemin', 'zillow']);
   grunt.registerTask('dist', ['prod_env', 'default', 'uglify', 'buildcontrol']);  
 };

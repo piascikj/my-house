@@ -25,20 +25,23 @@ $(function() {
   var visit_id = crypto.randomBytes(20).toString('hex');
 
   function addEvent(evt, data, cb) {
-    data.session = getSessionId();
-    data.host = location.hostname;
-    data.visit_id = visit_id;
-    data.event = evt;
+    // Remove this to send events in dev
+    if (process.env.NODE_ENV === "production") {
+      data.session = getSessionId();
+      data.host = location.hostname;
+      data.visit_id = visit_id;
+      data.event = evt;
 
-    cb = cb || function(err, res) {
-        if (err) {
-            console.log("Oh no, an error!");
-        } else {
-            console.log("Hooray, it worked!");
-        }
-    };
-    
-    client.addEvent("web", data, cb);
+      cb = cb || function(err, res) {
+          if (err) {
+              console.log("Oh no, an error!");
+          } else {
+              console.log("Hooray, it worked!");
+          }
+      };
+      
+      client.addEvent("web", data, cb);
+    } else cb();
   }
 
   function addClickEvent(el, cb) {
@@ -147,6 +150,11 @@ $(function() {
 
   $('.contact').click(function() {
     addClickEvent('contact');
+  });
+
+  $('.info').click(function() {
+    openMenu('.info-menu');
+    return false;
   });
 
   // Share menu

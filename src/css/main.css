@@ -18,6 +18,14 @@ body, html, main {
   text-transform: uppercase;  
 }
 
+.navbar-header .text-left a i {
+  padding-right:10px;
+}
+
+.navbar-header .text-right a i {
+  padding-left:10px;
+}
+
 .navbar {
   min-height: 40px;
 }
@@ -47,7 +55,7 @@ body, html, main {
     background-attachment: fixed;
     background-repeat: no-repeat;
     background-position: center center;
-} 
+}
 
 .cd-fixed-bg.cd-bg-house {
   background-image: url("../images/house01.jpg");
@@ -141,6 +149,25 @@ body, html, main {
   color: #fff;
 }
 
+.cd-content {
+  position: absolute;
+  top: 0;
+  text-align: center;
+  width: 100%;
+  height: 100%;
+  padding: 2em;
+  min-height: 10%;
+  color: #fff;
+}
+
+.cd-content .main {
+  margin-top: 40px;
+}
+
+.cd-content li {
+  text-align: left;
+}
+
 .nav-menu {
   position: fixed;
   top: 40px;
@@ -172,6 +199,14 @@ body, html, main {
     padding: 20px;
     margin: 0;
     font-weight: 300;
+}
+
+.nav-menu h4 {
+    color: #afdefa;
+    font-size: 1.25em;
+    padding: 10px;
+    margin: 0;
+    font-weight: 400;
 }
  
 .nav-menu a {
@@ -248,6 +283,11 @@ body, html, main {
 
 .display-small {
   display: none;
+}
+
+.info-menu {
+  font-weight: bold;
+  letter-spacing: 2px;
 }
 
 nav.hide-small {
