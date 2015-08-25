@@ -20979,7 +20979,7 @@ var cookie = require('cookie-cutter');
 var crypto = require('crypto');
 
 var client;
-if ("production" === "production") {
+if ("development" === "production") {
   client = Keen.configure({
       projectId: "5474b4af36bca436e62dcf85",
       writeKey: "9dd078a24fd66b4730dbee3d446ccea556b5cdcb795a45f8727657d6bcf78b0540ae84aade8f4d8687ae3ad0d0d99ff1e9ecbbaae60296e1e3836f309d44e49436e502a5cd967dd9318ebbae2cdf8abf2b2400b82e6dd67696fd3a31e65e7e056b6f2408818d2a299fc63ce2f9ec516b"
@@ -20998,7 +20998,7 @@ $(function() {
   function addEvent(evt, data, cb) {
     cb = cb || function(){};
     // Remove this to send events in dev
-    if ("production" === "production") {
+    if ("development" === "production") {
       data.session = getSessionId();
       data.host = location.hostname;
       data.visit_id = visit_id;
@@ -21011,7 +21011,7 @@ $(function() {
               console.log("Hooray, it worked!");
           }
       };
-      
+
       client.addEvent("web", data, cb);
     } else cb();
   }
@@ -21046,12 +21046,12 @@ $(function() {
         var nextImage = images[index+1];
         var nextId = $(nextImage).attr('id');
         $('.next-image').attr('href', '#'+nextId);
-        
+
         if (index > 0) {
           var image = images[index-1];
           var id = $(image).attr('id');
           $('.prev-image').attr('href', '#'+id);
-        } 
+        }
       }
     });
   }
@@ -21059,13 +21059,13 @@ $(function() {
   updateLink();
   var subject = encodeURIComponent("4476 Plank Rd. Highland, WI");
   var body = encodeURIComponent("I saw this property on the my-house site.");
-  var mailto = 'mailto:nicole@nicolecharles.com?' +
+  var mailto = 'mailto:dereks@dickersonnieman.com?' +
                'subject=' + subject +
                '&body=' + body +
                '&cc=' + 'myhouse@piascik.net';
 
   $('.contact').attr('href', mailto);
-  
+
   $(document).on('scroll', updateLink);
 
   function scroll() {
@@ -21169,11 +21169,11 @@ $(function() {
                  ',height=' + height +
                  ',top='    + top    +
                  ',left='   + left;
-    
+
     console.log(url);
     console.log(opts);
     window.open(url, 'social', opts);
- 
+
     return false;
   });
 
@@ -21181,5 +21181,6 @@ $(function() {
     hideAllMenus();
   });
 });
+
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"../../lib/jquery.visible":1,"bootstrap/dist/js/bootstrap":2,"cookie-cutter":3,"crypto":12,"jquery":56,"keen.io":57}]},{},[64]);

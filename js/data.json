@@ -1,7 +1,7 @@
 {
    "$": {
+      "xsi:schemaLocation": "http://www.zillow.com/static/xsd/SearchResults.xsd http://www.zillowstatic.com/vstatic/1dd7cdd/static/xsd/SearchResults.xsd",
       "xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
-      "xsi:schemaLocation": "http://www.zillow.com/static/xsd/SearchResults.xsd http://www.zillowstatic.com/vstatic/f056c2f/static/xsd/SearchResults.xsd",
       "xmlns:SearchResults": "http://www.zillow.com/static/xsd/SearchResults.xsd"
    },
    "request": [
@@ -75,7 +75,7 @@
                         "SingleFamily"
                      ],
                      "yearBuilt": [
-                        "1873"
+                        "1874"
                      ],
                      "lotSizeSqFt": [
                         "1479733"
@@ -84,7 +84,7 @@
                         "3627"
                      ],
                      "bathrooms": [
-                        "4.0"
+                        "3.5"
                      ],
                      "bedrooms": [
                         "4"
@@ -93,14 +93,14 @@
                         {
                            "amount": [
                               {
-                                 "_": "290794",
+                                 "_": "335460",
                                  "$": {
                                     "currency": "USD"
                                  }
                               }
                            ],
                            "last-updated": [
-                              "11/25/2014"
+                              "08/23/2015"
                            ],
                            "oneWeekChange": [
                               {
@@ -110,13 +110,19 @@
                               }
                            ],
                            "valueChange": [
-                              ""
+                              {
+                                 "_": "-2484",
+                                 "$": {
+                                    "duration": "30",
+                                    "currency": "USD"
+                                 }
+                              }
                            ],
                            "valuationRange": [
                               {
                                  "low": [
                                     {
-                                       "_": "209372",
+                                       "_": "261659",
                                        "$": {
                                           "currency": "USD"
                                        }
@@ -124,7 +130,7 @@
                                  ],
                                  "high": [
                                     {
-                                       "_": "331505",
+                                       "_": "429389",
                                        "$": {
                                           "currency": "USD"
                                        }
@@ -142,9 +148,9 @@
                            "region": [
                               {
                                  "$": {
+                                    "name": "Highland",
                                     "id": "32031",
-                                    "type": "city",
-                                    "name": "Highland"
+                                    "type": "city"
                                  },
                                  "links": [
                                     {
