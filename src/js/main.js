@@ -40,7 +40,7 @@ $(function() {
               console.log("Hooray, it worked!");
           }
       };
-      
+
       client.addEvent("web", data, cb);
     } else cb();
   }
@@ -75,12 +75,12 @@ $(function() {
         var nextImage = images[index+1];
         var nextId = $(nextImage).attr('id');
         $('.next-image').attr('href', '#'+nextId);
-        
+
         if (index > 0) {
           var image = images[index-1];
           var id = $(image).attr('id');
           $('.prev-image').attr('href', '#'+id);
-        } 
+        }
       }
     });
   }
@@ -88,13 +88,13 @@ $(function() {
   updateLink();
   var subject = encodeURIComponent("4476 Plank Rd. Highland, WI");
   var body = encodeURIComponent("I saw this property on the my-house site.");
-  var mailto = 'mailto:nicole@nicolecharles.com?' +
+  var mailto = 'mailto:dereks@dickersonnieman.com?' +
                'subject=' + subject +
                '&body=' + body +
                '&cc=' + 'myhouse@piascik.net';
 
   $('.contact').attr('href', mailto);
-  
+
   $(document).on('scroll', updateLink);
 
   function scroll() {
@@ -198,11 +198,11 @@ $(function() {
                  ',height=' + height +
                  ',top='    + top    +
                  ',left='   + left;
-    
+
     console.log(url);
     console.log(opts);
     window.open(url, 'social', opts);
- 
+
     return false;
   });
 
