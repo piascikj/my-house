@@ -21059,7 +21059,7 @@ $(function() {
   updateLink();
   var subject = encodeURIComponent("4476 Plank Rd. Highland, WI");
   var body = encodeURIComponent("I saw this property on the my-house site.");
-  var mailto = 'mailto:dereks@dickersonnieman.com?' +
+  var mailto = 'mailto:torre@theprofessionalbrokers.com?' +
                'subject=' + subject +
                '&body=' + body +
                '&cc=' + 'myhouse@piascik.net';
