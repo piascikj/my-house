@@ -21103,6 +21103,13 @@ $(function() {
     $('.nav-menu-open').removeClass('nav-menu-open');
   }
 
+  function queryString(field, url) {
+    var href = url ? url : window.location.href;
+    var reg = new RegExp( '[?&]' + field + '=([^&#]*)', 'i' );
+    var string = reg.exec(href);
+    return string ? string[1] : null;
+  }
+
   // Pics menu
   $('.cd-fixed-bg').each(function() {
     var id = $(this).attr('id');
@@ -21180,6 +21187,8 @@ $(function() {
   $(".cd-fixed-bg").click(function() {
     hideAllMenus();
   });
+
+  if (!queryString('unbranded')) $('.contact').show();
 });
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})

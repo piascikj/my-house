@@ -1,6 +1,6 @@
 {
    "$": {
-      "xsi:schemaLocation": "http://www.zillow.com/static/xsd/SearchResults.xsd http://www.zillowstatic.com/vstatic/3515902/static/xsd/SearchResults.xsd",
+      "xsi:schemaLocation": "http://www.zillow.com/static/xsd/SearchResults.xsd http://www.zillowstatic.com/vstatic/907eab4/static/xsd/SearchResults.xsd",
       "xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
       "xmlns:SearchResults": "http://www.zillow.com/static/xsd/SearchResults.xsd"
    },
@@ -84,7 +84,7 @@
                         "3627"
                      ],
                      "bathrooms": [
-                        "4.0"
+                        "3.0"
                      ],
                      "bedrooms": [
                         "4"
@@ -93,14 +93,14 @@
                         {
                            "amount": [
                               {
-                                 "_": "334925",
+                                 "_": "340242",
                                  "$": {
                                     "currency": "USD"
                                  }
                               }
                            ],
                            "last-updated": [
-                              "09/27/2015"
+                              "11/03/2015"
                            ],
                            "oneWeekChange": [
                               {
@@ -111,7 +111,7 @@
                            ],
                            "valueChange": [
                               {
-                                 "_": "-1629",
+                                 "_": "5159",
                                  "$": {
                                     "duration": "30",
                                     "currency": "USD"
@@ -122,7 +122,7 @@
                               {
                                  "low": [
                                     {
-                                       "_": "264591",
+                                       "_": "299413",
                                        "$": {
                                           "currency": "USD"
                                        }
@@ -130,7 +130,7 @@
                                  ],
                                  "high": [
                                     {
-                                       "_": "388513",
+                                       "_": "408290",
                                        "$": {
                                           "currency": "USD"
                                        }
