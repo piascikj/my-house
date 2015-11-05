@@ -15,7 +15,7 @@ body, html, main {
 }
 
 .navbar-header a {
-  text-transform: uppercase;  
+  text-transform: uppercase;
 }
 
 .navbar-header .text-left a i {
@@ -72,7 +72,7 @@ body, html, main {
 .cd-fixed-bg.cd-bg-kitchen {
   background-image: url("../images/kitchen01.jpg");
 }
- 
+
 .cd-fixed-bg.cd-bg-master {
   background-image: url("../images/master01.jpg");
 }
@@ -163,6 +163,9 @@ body, html, main {
 
 .cd-content .main {
   margin-top: 40px;
+  width: 70%;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .cd-content li {
@@ -192,7 +195,7 @@ body, html, main {
   text-shadow: 2px 2px rgba(0,0,0,0.1);
   color: #fff;
   opacity: .8;
-  text-transform: uppercase; 
+  text-transform: uppercase;
 }
 
 .nav-menu.dark-overlay:hover {
@@ -214,19 +217,19 @@ body, html, main {
     margin: 0;
     font-weight: 400;
 }
- 
+
 .nav-menu a {
     display: block;
     color: #fff;
     font-size: 1.5em;
     font-weight: 300;
 }
- 
+
 .nav-menu a:hover {
     background: #258ecd;
     text-decoration: none;
 }
- 
+
 .nav-menu a:active {
     background: #afdefa;
     color: #47a3da;
@@ -235,7 +238,7 @@ body, html, main {
 .nav-menu-left {
     left: -380px;
 }
- 
+
 .nav-menu-right {
     right: -380px;
 }
@@ -250,11 +253,11 @@ body, html, main {
   font-size: 1.5em;
 }
 
- 
+
 .nav-menu-left.nav-menu-open {
     left: 0px;
 }
- 
+
 .nav-menu-right.nav-menu-open {
     right: 0px;
 }
@@ -303,7 +306,7 @@ nav.hide-small {
 .cd-intro h1 {
   font: 400 100px/0.8 'Great Vibes', Helvetica, sans-serif;
   color: #fff;
-  text-shadow: 4px 4px 3px rgba(0,0,0,0.1); 
+  text-shadow: 4px 4px 3px rgba(0,0,0,0.1);
 }
 
 .cd-intro p {
@@ -311,11 +314,11 @@ nav.hide-small {
   margin: .5em 0;
 }
 
-@media (max-device-width: 800px) and (orientation: portrait) {  
+@media (max-device-width: 800px) and (orientation: portrait) {
   .cd-info h1 {
     font: 400 25px/0.8 'Great Vibes', Helvetica, sans-serif;
     color: #fff;
-    text-shadow: 4px 4px 3px rgba(0,0,0,0.1); 
+    text-shadow: 4px 4px 3px rgba(0,0,0,0.1);
   }
 
   .cd-info p {
@@ -349,7 +352,7 @@ nav.hide-small {
   .cd-fixed-bg.cd-bg-kitchen {
     background-image: url("../images/small/kitchen01.jpg");
   }
-   
+
   .cd-fixed-bg.cd-bg-master {
     background-image: url("../images/small/master01.jpg");
   }
@@ -399,11 +402,11 @@ nav.hide-small {
   }
 }
 
-@media (max-device-width: 1280px) and (orientation: landscape) { 
+@media (max-device-width: 1280px) and (orientation: landscape) {
   .cd-intro h1 {
     font: 400 35px/0.8 'Great Vibes', Helvetica, sans-serif;
     color: #fff;
-    text-shadow: 4px 4px 3px rgba(0,0,0,0.1); 
+    text-shadow: 4px 4px 3px rgba(0,0,0,0.1);
   }
 
   .cd-intro p {
@@ -438,7 +441,7 @@ nav.hide-small {
   .cd-fixed-bg.cd-bg-kitchen {
     background-image: url("../images/small/kitchen01.jpg");
   }
-   
+
   .cd-fixed-bg.cd-bg-master {
     background-image: url("../images/small/master01.jpg");
   }
@@ -492,7 +495,7 @@ nav.hide-small {
   .cd-intro h1 {
     font: 400 35px/0.8 'Great Vibes', Helvetica, sans-serif;
     color: #fff;
-    text-shadow: 4px 4px 3px rgba(0,0,0,0.1); 
+    text-shadow: 4px 4px 3px rgba(0,0,0,0.1);
   }
 
   .cd-intro p {
@@ -527,7 +530,7 @@ nav.hide-small {
   .cd-fixed-bg.cd-bg-kitchen {
     background-image: url("../images/small/kitchen01.jpg");
   }
-   
+
   .cd-fixed-bg.cd-bg-master {
     background-image: url("../images/small/master01.jpg");
   }
@@ -583,7 +586,7 @@ nav.hide-small {
   .cd-info h1 {
     font: 400 25px/0.8 'Great Vibes', Helvetica, sans-serif;
     color: #fff;
-    text-shadow: 4px 4px 3px rgba(0,0,0,0.1); 
+    text-shadow: 4px 4px 3px rgba(0,0,0,0.1);
   }
 
   .cd-info p {
