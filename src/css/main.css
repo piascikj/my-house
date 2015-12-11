@@ -400,6 +400,13 @@ nav.hide-small {
   .cd-fixed-bg.cd-bg-holiday {
     background-image: url("../images/small/snow02.jpg");
   }
+
+  .cd-content .main {
+    margin-top: 40px;
+    width: 90%;
+    margin-left: 0;
+    margin-right: 0;
+  }
 }
 
 @media (max-device-width: 1280px) and (orientation: landscape) {

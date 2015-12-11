@@ -140,7 +140,7 @@ $(function() {
   }
 
   // Pics menu
-  $('.cd-fixed-bg').each(function() {
+  $('.cd-fixed-bg, cd-bg-content').each(function() {
     var id = $(this).attr('id');
     var link = $('<a/>').attr('href', '#' + id).text(id.replace('-',' '));
     $('.pics-menu').append(link);
