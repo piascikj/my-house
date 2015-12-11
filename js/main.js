@@ -21151,37 +21151,39 @@ $(function() {
   });
 
   // Share buttons
-  $('.pin').attr('href','//www.pinterest.com/pin/create/link/?' +
-                        'url=' + location.origin + location.pathname + '&' +
-                        'media=' + location.origin + location.pathname + 'images/house01.jpg' + '&' +
-                        'description=36 acre farm for sale in south-west WI');
+  $(document).ready(function() {
+    $('.pin').attr('href','//www.pinterest.com/pin/create/link/?' +
+                          'url=' + location.origin + location.pathname + '&' +
+                          'media=' + location.origin + location.pathname + 'images/house01.jpg' + '&' +
+                          'description=36 acre farm for sale in south-west WI');
 
-  $('.tweet').attr('href', '//twitter.com/share?' +
-                           'url=' + location.origin + location.pathname + '&' +
-                           'text=Look at this beautiful country home in SW Wisconsin&' +
-                           'via=my_house_story');
+    $('.tweet').attr('href', '//twitter.com/share?' +
+                             'url=' + location.origin + location.pathname + '&' +
+                             'text=Look at this beautiful country home in SW Wisconsin&' +
+                             'via=my_house_story');
 
-  $('.fb').attr('href', 'https://www.facebook.com/sharer/sharer.php?' +
-                        'u=' + location.origin + location.pathname);
+    $('.fb').attr('href', 'https://www.facebook.com/sharer/sharer.php?' +
+                          'u=' + location.origin + location.pathname);
 
-  $('.popup').click(function(event) {
-    addClickEvent(this.className);
-    var width  = 575,
-        height = 400,
-        left   = ($(window).width()  - width)  / 2,
-        top    = ($(window).height() - height) / 2,
-        url    = this.href,
-        opts   = 'status=1' +
-                 ',width='  + width  +
-                 ',height=' + height +
-                 ',top='    + top    +
-                 ',left='   + left;
+    $('.popup').click(function(event) {
+      addClickEvent(this.className);
+      var width  = 575,
+          height = 400,
+          left   = ($(window).width()  - width)  / 2,
+          top    = ($(window).height() - height) / 2,
+          url    = this.href,
+          opts   = 'status=1' +
+                   ',width='  + width  +
+                   ',height=' + height +
+                   ',top='    + top    +
+                   ',left='   + left;
 
-    console.log(url);
-    console.log(opts);
-    window.open(url, 'social', opts);
+      console.log(url);
+      console.log(opts);
+      window.open(url, 'social', opts);
 
-    return false;
+      return false;
+    });
   });
 
   $(".cd-fixed-bg").click(function() {
