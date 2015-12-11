@@ -20979,7 +20979,7 @@ var cookie = require('cookie-cutter');
 var crypto = require('crypto');
 
 var client;
-if ("development" === "production") {
+if ("production" === "production") {
   client = Keen.configure({
       projectId: "5474b4af36bca436e62dcf85",
       writeKey: "9dd078a24fd66b4730dbee3d446ccea556b5cdcb795a45f8727657d6bcf78b0540ae84aade8f4d8687ae3ad0d0d99ff1e9ecbbaae60296e1e3836f309d44e49436e502a5cd967dd9318ebbae2cdf8abf2b2400b82e6dd67696fd3a31e65e7e056b6f2408818d2a299fc63ce2f9ec516b"
@@ -20998,7 +20998,7 @@ $(function() {
   function addEvent(evt, data, cb) {
     cb = cb || function(){};
     // Remove this to send events in dev
-    if ("development" === "production") {
+    if ("production" === "production") {
       data.session = getSessionId();
       data.host = location.hostname;
       data.visit_id = visit_id;
@@ -21111,7 +21111,7 @@ $(function() {
   }
 
   // Pics menu
-  $('.cd-fixed-bg').each(function() {
+  $('.cd-fixed-bg, cd-bg-content').each(function() {
     var id = $(this).attr('id');
     var link = $('<a/>').attr('href', '#' + id).text(id.replace('-',' '));
     $('.pics-menu').append(link);
