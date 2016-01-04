@@ -2185,6 +2185,445 @@ if (typeof jQuery === 'undefined') { throw new Error('Bootstrap\'s JavaScript re
 }(jQuery);
 
 },{}],3:[function(require,module,exports){
+(function () {
+
+  var options = {
+    pageviewsEventName: "pageviews",
+    inputChangeEventName: "input-changes",
+    clicksEventName: "clicks",
+    formSubmissionsEventName: "form-submissions",
+    callbackTimeout: 1000,
+    globalProperties: {
+      page_url: window.location.href,
+      referrer_url: document.referrer
+    }
+  };
+
+  // create a common namespace with options
+  var CommonWeb = {
+    options: options
+  };
+
+  CommonWeb.addGlobalProperties = function(properties) {
+    $.extend(CommonWeb.options.globalProperties, properties);
+  }
+
+  // initiate user tracking, using a GUID stored in a cookie
+  // The user can pass in a custom cookie name and custom GUID, if they would like
+  CommonWeb.trackSession = function(cookieName, defaultGuid) {
+    if(typeof(cookieName) !== "string") {
+      cookieName = "common_web_guid";
+    }
+
+    // Look for the GUID in the currently set cookies
+    var cookies = document.cookie.split('; ');
+    var guid = null;
+
+    for(var i=0; i < cookies.length; i++) {
+      cookieParts = cookies[i].split('=')
+      if(cookieParts[0] === cookieName) {
+        // Got it!
+        guid = cookieParts[1];
+        break;
+      }
+    }
+
+    // We didn't find our guid in the cookies, so we need to generate our own
+    if(guid === null) {
+      if(typeof(defaultGuid) === "string") {
+        guid = defaultGuid;
+      } else {
+        genSub = function() {
+          return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
+        }
+
+        guid = genSub() + genSub() + "-" + genSub() + "-" + 
+          genSub() + "-" + genSub() + "-" + genSub() + genSub() + genSub();
+      }
+
+      expiration_date = new Date();
+      expiration_date.setFullYear(expiration_date.getFullYear() + 1);
+
+      cookie_string = cookieName + "=" + guid + "; path/; expires=" + expiration_date.toGMTString();
+      document.cookie = cookie_string
+
+    }
+    
+    CommonWeb.addGlobalProperties({guid: guid});
+
+    return guid;
+  }
+
+  // setup pageview tracking hooks, optionally including more properties
+  // more properties can also be a function
+  // do not double set along with track!
+  CommonWeb.trackPageview = function (moreProperties) {
+
+    var defaultProperties = CommonWeb.options.globalProperties;
+    var properties = $.extend(true, {}, defaultProperties, toProperties(moreProperties));
+
+    CommonWeb.Callback(CommonWeb.options.pageviewsEventName, properties);
+
+  }
+
+  CommonWeb.trackClicks = function (elements, moreProperties) {
+
+    if (typeof elements === 'undefined') {
+      elements = $("a");
+    }
+
+    $.each(elements, function (index, element) {
+
+      $(element).on('click', function (event) {
+
+        var timer = CommonWeb.options.callbackTimeout;
+
+        // combine local and global moreProperties
+        var properties = toClickProperties(event, element, moreProperties);
+
+        // check if the page is probably going to unload
+        var pageWillUnload = element.href && element.target !== '_blank' && !isMetaKey(event);
+        var unloadCallback = function () {
+        };
+
+        // if the page will unload, don't let the JS event bubble
+        // but navigate to the href after the click
+        if (pageWillUnload) {
+          unloadCallback = function () {
+            window.location.href = element.href;
+          };
+          event.preventDefault();
+
+          setTimeout(function() {
+            window.location.href = element.href;
+          }, timer);
+        }
+
+        CommonWeb.Callback(options.clicksEventName, properties, unloadCallback);
+
+      });
+
+    });
+
+  }
+
+  // track things that are not links; i.e. don't need any special tricks to
+  // prevent page unloads
+  CommonWeb.trackClicksPassive = function (elements, moreProperties) {
+
+    $.each(elements, function (index, element) {
+
+      $(element).on('click', function (event) {
+
+        var properties = toClickProperties(event, element, moreProperties);
+        CommonWeb.Callback(options.clicksEventName, properties);
+
+      });
+
+    });
+
+  }
+
+  // track form submissions
+  CommonWeb.trackFormSubmissions = function (elements, moreProperties) {
+
+    if (typeof elements === 'undefined') {
+      elements = $("form");
+    }
+
+    $.each(elements, function (index, element) {
+
+      var timer = CommonWeb.options.callbackTimeout;
+
+      // use to avoid duplicate submits
+      var callbackCalled = false;
+
+      $(element).on('submit', function (event) {
+
+        var properties = toSubmitProperties(event, element, moreProperties);
+
+        // assume true for now in this method
+        var pageWillUnload = true;
+        var unloadCallback = function () {
+        };
+
+        if (pageWillUnload) {
+
+          unloadCallback = function () {
+
+            // not the best approach here.
+            // the form can only be submitted
+            // once, etc.
+            if (!callbackCalled) {
+              callbackCalled = true;
+              element.submit();
+            }
+
+          };
+
+          event.preventDefault();
+
+          // We only want to fire the timeout if
+          // we know the page will unload. Ajax 
+          // form submissions shouldn't submit.
+          setTimeout(function() {
+            callbackCalled = true;
+            element.submit();
+          }, timer);
+        }
+
+        CommonWeb.Callback(options.formSubmissionsEventName, properties, unloadCallback);
+
+      });
+
+    });
+  }
+
+  CommonWeb.trackInputChanges = function (elements, moreProperties) {
+
+    if (typeof elements === 'undefined') {
+      elements = $("input, textarea, select");
+    }
+
+    $.each(elements, function(index, element) {
+      var currentValue = $(element).val()
+
+      $(element).on('change', function(event) {
+
+        var properties = toChangeProperties(event, element, currentValue, moreProperties);
+        CommonWeb.Callback(options.inputChangeEventName, properties);
+
+        currentValue = $(element).val()
+      });
+
+    });
+  }
+
+  // define a namespace just for transformations of events and elements to properties
+  // override as a workaround to add / remove properties
+  CommonWeb.Transformations = {
+
+    eventToProperties: function (event) {
+
+      var properties = {};
+
+      properties['timestamp'] = event.timestamp;
+      properties['type'] = event.type;
+      properties['metaKey'] = event.metaKey;
+
+      return properties;
+
+    },
+
+    elementToProperties: function (element, extraProperties) {
+
+      var properties = extraProperties || {};
+
+      // add the tag name
+      properties.tagName = element.tagName;
+
+      // add the inner text for some tag types
+      if (element.tagName === 'A') {
+        properties.text = element.innerText;
+      }
+
+      // add each attribute
+      $(element.attributes).each(function (index, attr) {
+        properties[attr.nodeName] = attr.value;
+      });
+
+      // break classes out into an array if any exist
+      var classes = $(element).attr('class');
+      if (classes) {
+        properties['classes'] = classes.split(/\s+/)
+      }
+
+      properties['path'] = $(element).getPath();
+
+      return properties;
+
+    },
+
+    formElementToProperties: function (formElement) {
+
+      var formValues = {};
+
+      // TODO: remove dependency on jQuery
+      formValues.form_values = $(formElement).serializeArray();
+      // simple alias for now, but could do more as
+      // far as the form values are concerned
+      return this.elementToProperties(formElement, formValues);
+
+    },
+
+    inputElementToProperties: function(inputElement) {
+
+      var inputValues = {
+        value: $(inputElement).val()
+      };
+
+      var parentForm = $(inputElement).closest("form");
+      if(parentForm.size() > 0) {
+        inputValues.form = this.elementToProperties(parentForm[0])
+      }
+
+      return this.elementToProperties(inputElement, inputValues);
+
+    }
+
+  }
+
+  function toClickProperties(event, element, moreProperties) {
+
+    var defaultProperties = CommonWeb.options.globalProperties;
+    var properties = $.extend(true, {}, defaultProperties, toProperties(moreProperties, [event, element]));
+
+    var elementProperties = { element: CommonWeb.Transformations.elementToProperties(element, null) };
+    var eventProperties = { event: CommonWeb.Transformations.eventToProperties(event) };
+
+    return $.extend(true, {}, properties, elementProperties, eventProperties);
+
+  }
+
+  function toChangeProperties(event, element, previousValue, moreProperties) {
+
+    var defaultProperties = CommonWeb.options.globalProperties;
+    var properties = $.extend(true, {}, defaultProperties, toProperties(moreProperties, [event, element]));
+
+    var elementProperties = { element: CommonWeb.Transformations.inputElementToProperties(element) };
+    if(previousValue && previousValue !== "") {
+      elementProperties.element.previousValue = previousValue
+    }
+
+    var eventProperties = { event: CommonWeb.Transformations.eventToProperties(event) };
+
+    return $.extend(true, {}, properties, elementProperties, eventProperties);
+  }
+
+  function toSubmitProperties(event, element, moreProperties) {
+
+    var defaultProperties = CommonWeb.options.globalProperties;
+    var properties = $.extend(true, {}, defaultProperties, toProperties(moreProperties, [event, element]));
+
+    var elementProperties = { element: CommonWeb.Transformations.formElementToProperties(element) };
+    var eventProperties = { event: CommonWeb.Transformations.eventToProperties(event) };
+
+    return $.extend(true, {}, properties, elementProperties, eventProperties);
+
+  }
+
+  function toProperties(propertiesOrFunction, args) {
+    if (typeof propertiesOrFunction === 'function') {
+      return propertiesOrFunction.apply(window, args);
+    } else {
+      return propertiesOrFunction
+    }
+  }
+
+  function isMetaKey(event) {
+    return event.metaKey || event.altKey || event.ctrlKey || event.shiftKey;
+  }
+
+  /*
+   jQuery-GetPath v0.01, by Dave Cardwell. (2007-04-27)
+
+   http://davecardwell.co.uk/javascript/jquery/plugins/jquery-getpath/
+
+   Copyright (c)2007 Dave Cardwell. All rights reserved.
+   Released under the MIT License.
+
+
+   Usage:
+   var path = $('#foo').getPath();
+   */
+  jQuery.fn.extend({
+    getPath: function( path ) {
+      // The first time this function is called, path won't be defined.
+      if ( typeof path == 'undefined' ) path = '';
+
+      // If this element is <html> we've reached the end of the path.
+      if ( this.is('html') )
+        return 'html' + path;
+
+      // Add the element name.
+      var cur = this.get(0).nodeName.toLowerCase();
+
+      // Determine the IDs and path.
+      var id    = this.attr('id'),
+        klass = this.attr('class');
+
+      // Add the #id if there is one.
+      if ( typeof id != 'undefined' )
+        cur += '#' + id;
+
+      // Add any classes.
+      if ( typeof klass != 'undefined' )
+      cur += '.' + klass.split(/[\s\n]+/).join('.');
+
+      // Recurse up the DOM.
+      return this.parent().getPath( ' > ' + cur + path );
+    }
+  });
+
+  // backends
+
+  CommonWeb.Keen = {
+    Client: null,
+    Debug: false,
+    Callback: function (collection, properties, callback) {
+      CommonWeb.Keen.Client.addEvent(collection, properties, function() {
+        if (CommonWeb.Keen.Debug) {
+          console.log(collection + ": " + JSON.stringify(properties));
+        }
+        if (callback) {
+          callback();
+        }
+      });
+    },
+    globalProperties: {
+      keen: {
+        addons: [
+          {
+            "name": "keen:ip_to_geo",
+            "input": {
+              "ip": "ip_address"
+            },
+            "output": "ip_geo_info"
+          },
+          {
+            "name": "keen:ua_parser",
+            "input": {
+              "ua_string": "user_agent"
+            },
+            "output": "parsed_user_agent"
+          },
+          {
+            "name": "keen:url_parser",
+            "input": {
+              "url": "page_url"
+            },
+            "output": "parsed_page_url"
+          },
+          {
+            "name": "keen:referrer_parser",
+            "input": {
+              "referrer_url": "referrer_url",
+              "page_url": "page_url"
+            },
+            "output": "referrer_info"
+          }
+        ]
+      },
+      ip_address: "${keen.ip}",
+      user_agent: "${keen.user_agent}"
+    }
+  };
+
+  window.CommonWeb = CommonWeb;
+
+})();
+
+},{}],4:[function(require,module,exports){
 var exports = module.exports = function (doc) {
     if (!doc) doc = {};
     if (typeof doc === 'string') doc = { cookie: doc };
@@ -2218,9 +2657,9 @@ if (typeof document !== 'undefined') {
     exports.set = cookie.set;
 }
 
-},{}],4:[function(require,module,exports){
-
 },{}],5:[function(require,module,exports){
+
+},{}],6:[function(require,module,exports){
 /*!
  * The buffer module from node.js, for the browser.
  *
@@ -3273,7 +3712,7 @@ function decodeUtf8Char (str) {
   }
 }
 
-},{"base64-js":6,"ieee754":7,"is-array":8}],6:[function(require,module,exports){
+},{"base64-js":7,"ieee754":8,"is-array":9}],7:[function(require,module,exports){
 var lookup = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
 
 ;(function (exports) {
@@ -3395,7 +3834,7 @@ var lookup = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
 	exports.fromByteArray = uint8ToBase64
 }(typeof exports === 'undefined' ? (this.base64js = {}) : exports))
 
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 exports.read = function(buffer, offset, isLE, mLen, nBytes) {
   var e, m,
       eLen = nBytes * 8 - mLen - 1,
@@ -3481,7 +3920,7 @@ exports.write = function(buffer, value, offset, isLE, mLen, nBytes) {
   buffer[offset + i - d] |= s * 128;
 };
 
-},{}],8:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 
 /**
  * isArray
@@ -3516,7 +3955,7 @@ module.exports = isArray || function (val) {
   return !! val && '[object Array]' == str.call(val);
 };
 
-},{}],9:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 (function (Buffer){
 var createHash = require('sha.js')
 
@@ -3550,7 +3989,7 @@ module.exports = function (alg) {
 }
 
 }).call(this,require("buffer").Buffer)
-},{"./md5":13,"buffer":5,"ripemd160":29,"sha.js":31}],10:[function(require,module,exports){
+},{"./md5":14,"buffer":6,"ripemd160":30,"sha.js":32}],11:[function(require,module,exports){
 (function (Buffer){
 var createHash = require('./create-hash')
 
@@ -3597,7 +4036,7 @@ Hmac.prototype.digest = function (enc) {
 
 
 }).call(this,require("buffer").Buffer)
-},{"./create-hash":9,"buffer":5}],11:[function(require,module,exports){
+},{"./create-hash":10,"buffer":6}],12:[function(require,module,exports){
 (function (Buffer){
 var intSize = 4;
 var zeroBuffer = new Buffer(intSize); zeroBuffer.fill(0);
@@ -3635,7 +4074,7 @@ function hash(buf, fn, hashSize, bigEndian) {
 module.exports = { hash: hash };
 
 }).call(this,require("buffer").Buffer)
-},{"buffer":5}],12:[function(require,module,exports){
+},{"buffer":6}],13:[function(require,module,exports){
 (function (Buffer){
 var rng = require('./rng')
 
@@ -3688,7 +4127,7 @@ each(['createCredentials'
 })
 
 }).call(this,require("buffer").Buffer)
-},{"./create-hash":9,"./create-hmac":10,"./pbkdf2":35,"./rng":36,"browserify-aes/inject":19,"buffer":5}],13:[function(require,module,exports){
+},{"./create-hash":10,"./create-hmac":11,"./pbkdf2":36,"./rng":37,"browserify-aes/inject":20,"buffer":6}],14:[function(require,module,exports){
 /*
  * A JavaScript implementation of the RSA Data Security, Inc. MD5 Message
  * Digest Algorithm, as defined in RFC 1321.
@@ -3845,7 +4284,7 @@ module.exports = function md5(buf) {
   return helpers.hash(buf, core_md5, 16);
 };
 
-},{"./helpers":11}],14:[function(require,module,exports){
+},{"./helpers":12}],15:[function(require,module,exports){
 (function (Buffer){
 
 module.exports = function (crypto, password, keyLen, ivLen) {
@@ -3905,7 +4344,7 @@ module.exports = function (crypto, password, keyLen, ivLen) {
   };
 };
 }).call(this,require("buffer").Buffer)
-},{"buffer":5}],15:[function(require,module,exports){
+},{"buffer":6}],16:[function(require,module,exports){
 (function (Buffer){
 var uint_max = Math.pow(2, 32);
 function fixup_uint32(x) {
@@ -4104,7 +4543,7 @@ AES.prototype._doCryptBlock = function(M, keySchedule, SUB_MIX, SBOX) {
 
   exports.AES = AES;
 }).call(this,require("buffer").Buffer)
-},{"buffer":5}],16:[function(require,module,exports){
+},{"buffer":6}],17:[function(require,module,exports){
 (function (Buffer){
 var Transform = require('stream').Transform;
 var inherits = require('inherits');
@@ -4139,7 +4578,7 @@ CipherBase.prototype.final = function (outputEnc) {
   return outData;
 };
 }).call(this,require("buffer").Buffer)
-},{"buffer":5,"inherits":38,"stream":52}],17:[function(require,module,exports){
+},{"buffer":6,"inherits":39,"stream":53}],18:[function(require,module,exports){
 (function (Buffer){
 var aes = require('./aes');
 var Transform = require('./cipherBase');
@@ -4260,7 +4699,7 @@ module.exports = function (crypto) {
 };
 
 }).call(this,require("buffer").Buffer)
-},{"./EVP_BytesToKey":14,"./aes":15,"./cipherBase":16,"./modes":20,"./modes/cbc":21,"./modes/cfb":22,"./modes/ctr":23,"./modes/ecb":24,"./modes/ofb":25,"./streamCipher":26,"buffer":5,"inherits":38}],18:[function(require,module,exports){
+},{"./EVP_BytesToKey":15,"./aes":16,"./cipherBase":17,"./modes":21,"./modes/cbc":22,"./modes/cfb":23,"./modes/ctr":24,"./modes/ecb":25,"./modes/ofb":26,"./streamCipher":27,"buffer":6,"inherits":39}],19:[function(require,module,exports){
 (function (Buffer){
 var aes = require('./aes');
 var Transform = require('./cipherBase');
@@ -4372,7 +4811,7 @@ module.exports = function (crypto) {
 };
 
 }).call(this,require("buffer").Buffer)
-},{"./EVP_BytesToKey":14,"./aes":15,"./cipherBase":16,"./modes":20,"./modes/cbc":21,"./modes/cfb":22,"./modes/ctr":23,"./modes/ecb":24,"./modes/ofb":25,"./streamCipher":26,"buffer":5,"inherits":38}],19:[function(require,module,exports){
+},{"./EVP_BytesToKey":15,"./aes":16,"./cipherBase":17,"./modes":21,"./modes/cbc":22,"./modes/cfb":23,"./modes/ctr":24,"./modes/ecb":25,"./modes/ofb":26,"./streamCipher":27,"buffer":6,"inherits":39}],20:[function(require,module,exports){
 module.exports = function (crypto, exports) {
   exports = exports || {};
   var ciphers = require('./encrypter')(crypto);
@@ -4389,7 +4828,7 @@ module.exports = function (crypto, exports) {
 };
 
 
-},{"./decrypter":17,"./encrypter":18,"./modes":20}],20:[function(require,module,exports){
+},{"./decrypter":18,"./encrypter":19,"./modes":21}],21:[function(require,module,exports){
 exports['aes-128-ecb'] = {
   cipher: 'AES',
   key: 128,
@@ -4498,7 +4937,7 @@ exports['aes-256-ctr'] = {
   mode: 'CTR',
   type: 'stream'
 };
-},{}],21:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
 var xor = require('../xor');
 exports.encrypt = function (self, block) {
   var data = xor(block, self._prev);
@@ -4511,7 +4950,7 @@ exports.decrypt = function (self, block) {
   var out = self._cipher.decryptBlock(block);
   return xor(out, pad);
 };
-},{"../xor":27}],22:[function(require,module,exports){
+},{"../xor":28}],23:[function(require,module,exports){
 (function (Buffer){
 var xor = require('../xor');
 exports.encrypt = function (self, data, decrypt) {
@@ -4541,7 +4980,7 @@ function encryptStart(self, data, decrypt) {
   return out;
 }
 }).call(this,require("buffer").Buffer)
-},{"../xor":27,"buffer":5}],23:[function(require,module,exports){
+},{"../xor":28,"buffer":6}],24:[function(require,module,exports){
 (function (Buffer){
 var xor = require('../xor');
 function getBlock(self) {
@@ -4572,14 +5011,14 @@ function incr32(iv) {
   }
 }
 }).call(this,require("buffer").Buffer)
-},{"../xor":27,"buffer":5}],24:[function(require,module,exports){
+},{"../xor":28,"buffer":6}],25:[function(require,module,exports){
 exports.encrypt = function (self, block) {
   return self._cipher.encryptBlock(block);
 };
 exports.decrypt = function (self, block) {
   return self._cipher.decryptBlock(block);
 };
-},{}],25:[function(require,module,exports){
+},{}],26:[function(require,module,exports){
 (function (Buffer){
 var xor = require('../xor');
 function getBlock(self) {
@@ -4595,7 +5034,7 @@ exports.encrypt = function (self, chunk) {
   return xor(chunk, pad);
 };
 }).call(this,require("buffer").Buffer)
-},{"../xor":27,"buffer":5}],26:[function(require,module,exports){
+},{"../xor":28,"buffer":6}],27:[function(require,module,exports){
 (function (Buffer){
 var aes = require('./aes');
 var Transform = require('./cipherBase');
@@ -4624,7 +5063,7 @@ StreamCipher.prototype._flush = function (next) {
   next();
 };
 }).call(this,require("buffer").Buffer)
-},{"./aes":15,"./cipherBase":16,"buffer":5,"inherits":38}],27:[function(require,module,exports){
+},{"./aes":16,"./cipherBase":17,"buffer":6,"inherits":39}],28:[function(require,module,exports){
 (function (Buffer){
 module.exports = xor;
 function xor(a, b) {
@@ -4637,7 +5076,7 @@ function xor(a, b) {
   return out;
 }
 }).call(this,require("buffer").Buffer)
-},{"buffer":5}],28:[function(require,module,exports){
+},{"buffer":6}],29:[function(require,module,exports){
 (function (Buffer){
 module.exports = function(crypto) {
   function pbkdf2(password, salt, iterations, keylen, digest, callback) {
@@ -4725,7 +5164,7 @@ module.exports = function(crypto) {
 }
 
 }).call(this,require("buffer").Buffer)
-},{"buffer":5}],29:[function(require,module,exports){
+},{"buffer":6}],30:[function(require,module,exports){
 (function (Buffer){
 
 module.exports = ripemd160
@@ -4934,7 +5373,7 @@ function ripemd160(message) {
 
 
 }).call(this,require("buffer").Buffer)
-},{"buffer":5}],30:[function(require,module,exports){
+},{"buffer":6}],31:[function(require,module,exports){
 module.exports = function (Buffer) {
 
   //prototype class for hash functions
@@ -5013,7 +5452,7 @@ module.exports = function (Buffer) {
   return Hash
 }
 
-},{}],31:[function(require,module,exports){
+},{}],32:[function(require,module,exports){
 var exports = module.exports = function (alg) {
   var Alg = exports[alg]
   if(!Alg) throw new Error(alg + ' is not supported (we accept pull requests)')
@@ -5027,7 +5466,7 @@ exports.sha1 = require('./sha1')(Buffer, Hash)
 exports.sha256 = require('./sha256')(Buffer, Hash)
 exports.sha512 = require('./sha512')(Buffer, Hash)
 
-},{"./hash":30,"./sha1":32,"./sha256":33,"./sha512":34,"buffer":5}],32:[function(require,module,exports){
+},{"./hash":31,"./sha1":33,"./sha256":34,"./sha512":35,"buffer":6}],33:[function(require,module,exports){
 /*
  * A JavaScript implementation of the Secure Hash Algorithm, SHA-1, as defined
  * in FIPS PUB 180-1
@@ -5167,7 +5606,7 @@ module.exports = function (Buffer, Hash) {
   return Sha1
 }
 
-},{"util":55}],33:[function(require,module,exports){
+},{"util":56}],34:[function(require,module,exports){
 
 /**
  * A JavaScript implementation of the Secure Hash Algorithm, SHA-256, as defined
@@ -5316,7 +5755,7 @@ module.exports = function (Buffer, Hash) {
 
 }
 
-},{"util":55}],34:[function(require,module,exports){
+},{"util":56}],35:[function(require,module,exports){
 var inherits = require('util').inherits
 
 module.exports = function (Buffer, Hash) {
@@ -5562,7 +6001,7 @@ module.exports = function (Buffer, Hash) {
 
 }
 
-},{"util":55}],35:[function(require,module,exports){
+},{"util":56}],36:[function(require,module,exports){
 var pbkdf2Export = require('pbkdf2-compat/pbkdf2')
 
 module.exports = function (crypto, exports) {
@@ -5576,7 +6015,7 @@ module.exports = function (crypto, exports) {
   return exports
 }
 
-},{"pbkdf2-compat/pbkdf2":28}],36:[function(require,module,exports){
+},{"pbkdf2-compat/pbkdf2":29}],37:[function(require,module,exports){
 (function (global,Buffer){
 (function() {
   var g = ('undefined' === typeof window ? global : window) || {}
@@ -5606,7 +6045,7 @@ module.exports = function (crypto, exports) {
 }())
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer)
-},{"buffer":5,"crypto":4}],37:[function(require,module,exports){
+},{"buffer":6,"crypto":5}],38:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -5909,7 +6348,7 @@ function isUndefined(arg) {
   return arg === void 0;
 }
 
-},{}],38:[function(require,module,exports){
+},{}],39:[function(require,module,exports){
 if (typeof Object.create === 'function') {
   // implementation from standard node.js 'util' module
   module.exports = function inherits(ctor, superCtor) {
@@ -5934,12 +6373,12 @@ if (typeof Object.create === 'function') {
   }
 }
 
-},{}],39:[function(require,module,exports){
+},{}],40:[function(require,module,exports){
 module.exports = Array.isArray || function (arr) {
   return Object.prototype.toString.call(arr) == '[object Array]';
 };
 
-},{}],40:[function(require,module,exports){
+},{}],41:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -6027,10 +6466,10 @@ process.chdir = function (dir) {
     throw new Error('process.chdir is not supported');
 };
 
-},{}],41:[function(require,module,exports){
+},{}],42:[function(require,module,exports){
 module.exports = require("./lib/_stream_duplex.js")
 
-},{"./lib/_stream_duplex.js":42}],42:[function(require,module,exports){
+},{"./lib/_stream_duplex.js":43}],43:[function(require,module,exports){
 (function (process){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -6123,7 +6562,7 @@ function forEach (xs, f) {
 }
 
 }).call(this,require('_process'))
-},{"./_stream_readable":44,"./_stream_writable":46,"_process":40,"core-util-is":47,"inherits":38}],43:[function(require,module,exports){
+},{"./_stream_readable":45,"./_stream_writable":47,"_process":41,"core-util-is":48,"inherits":39}],44:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -6171,7 +6610,7 @@ PassThrough.prototype._transform = function(chunk, encoding, cb) {
   cb(null, chunk);
 };
 
-},{"./_stream_transform":45,"core-util-is":47,"inherits":38}],44:[function(require,module,exports){
+},{"./_stream_transform":46,"core-util-is":48,"inherits":39}],45:[function(require,module,exports){
 (function (process){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -7157,7 +7596,7 @@ function indexOf (xs, x) {
 }
 
 }).call(this,require('_process'))
-},{"_process":40,"buffer":5,"core-util-is":47,"events":37,"inherits":38,"isarray":39,"stream":52,"string_decoder/":53}],45:[function(require,module,exports){
+},{"_process":41,"buffer":6,"core-util-is":48,"events":38,"inherits":39,"isarray":40,"stream":53,"string_decoder/":54}],46:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -7369,7 +7808,7 @@ function done(stream, er) {
   return stream.push(null);
 }
 
-},{"./_stream_duplex":42,"core-util-is":47,"inherits":38}],46:[function(require,module,exports){
+},{"./_stream_duplex":43,"core-util-is":48,"inherits":39}],47:[function(require,module,exports){
 (function (process){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -7759,7 +8198,7 @@ function endWritable(stream, state, cb) {
 }
 
 }).call(this,require('_process'))
-},{"./_stream_duplex":42,"_process":40,"buffer":5,"core-util-is":47,"inherits":38,"stream":52}],47:[function(require,module,exports){
+},{"./_stream_duplex":43,"_process":41,"buffer":6,"core-util-is":48,"inherits":39,"stream":53}],48:[function(require,module,exports){
 (function (Buffer){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -7869,10 +8308,10 @@ function objectToString(o) {
   return Object.prototype.toString.call(o);
 }
 }).call(this,require("buffer").Buffer)
-},{"buffer":5}],48:[function(require,module,exports){
+},{"buffer":6}],49:[function(require,module,exports){
 module.exports = require("./lib/_stream_passthrough.js")
 
-},{"./lib/_stream_passthrough.js":43}],49:[function(require,module,exports){
+},{"./lib/_stream_passthrough.js":44}],50:[function(require,module,exports){
 var Stream = require('stream'); // hack to fix a circular dependency issue when used with browserify
 exports = module.exports = require('./lib/_stream_readable.js');
 exports.Stream = Stream;
@@ -7882,13 +8321,13 @@ exports.Duplex = require('./lib/_stream_duplex.js');
 exports.Transform = require('./lib/_stream_transform.js');
 exports.PassThrough = require('./lib/_stream_passthrough.js');
 
-},{"./lib/_stream_duplex.js":42,"./lib/_stream_passthrough.js":43,"./lib/_stream_readable.js":44,"./lib/_stream_transform.js":45,"./lib/_stream_writable.js":46,"stream":52}],50:[function(require,module,exports){
+},{"./lib/_stream_duplex.js":43,"./lib/_stream_passthrough.js":44,"./lib/_stream_readable.js":45,"./lib/_stream_transform.js":46,"./lib/_stream_writable.js":47,"stream":53}],51:[function(require,module,exports){
 module.exports = require("./lib/_stream_transform.js")
 
-},{"./lib/_stream_transform.js":45}],51:[function(require,module,exports){
+},{"./lib/_stream_transform.js":46}],52:[function(require,module,exports){
 module.exports = require("./lib/_stream_writable.js")
 
-},{"./lib/_stream_writable.js":46}],52:[function(require,module,exports){
+},{"./lib/_stream_writable.js":47}],53:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -8017,7 +8456,7 @@ Stream.prototype.pipe = function(dest, options) {
   return dest;
 };
 
-},{"events":37,"inherits":38,"readable-stream/duplex.js":41,"readable-stream/passthrough.js":48,"readable-stream/readable.js":49,"readable-stream/transform.js":50,"readable-stream/writable.js":51}],53:[function(require,module,exports){
+},{"events":38,"inherits":39,"readable-stream/duplex.js":42,"readable-stream/passthrough.js":49,"readable-stream/readable.js":50,"readable-stream/transform.js":51,"readable-stream/writable.js":52}],54:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -8240,14 +8679,14 @@ function base64DetectIncompleteChar(buffer) {
   this.charLength = this.charReceived ? 3 : 0;
 }
 
-},{"buffer":5}],54:[function(require,module,exports){
+},{"buffer":6}],55:[function(require,module,exports){
 module.exports = function isBuffer(arg) {
   return arg && typeof arg === 'object'
     && typeof arg.copy === 'function'
     && typeof arg.fill === 'function'
     && typeof arg.readUInt8 === 'function';
 }
-},{}],55:[function(require,module,exports){
+},{}],56:[function(require,module,exports){
 (function (process,global){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -8837,7 +9276,7 @@ function hasOwnProperty(obj, prop) {
 }
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./support/isBuffer":54,"_process":40,"inherits":38}],56:[function(require,module,exports){
+},{"./support/isBuffer":55,"_process":41,"inherits":39}],57:[function(require,module,exports){
 /*!
  * jQuery JavaScript Library v2.1.1
  * http://jquery.com/
@@ -18029,7 +18468,7 @@ return jQuery;
 
 }));
 
-},{}],57:[function(require,module,exports){
+},{}],58:[function(require,module,exports){
 (function (Buffer){
 var _ = require('underscore');
 var crypto = require('crypto');
@@ -18212,7 +18651,7 @@ module.exports = {
 };
 
 }).call(this,require("buffer").Buffer)
-},{"./lib/query":58,"./lib/requests":59,"buffer":5,"crypto":12,"underscore":63}],58:[function(require,module,exports){
+},{"./lib/query":59,"./lib/requests":60,"buffer":6,"crypto":13,"underscore":64}],59:[function(require,module,exports){
 var _ = require('underscore');
 var KeenRequests = require('./requests');
 
@@ -18348,7 +18787,7 @@ module.exports = {
   Query: Keen.Query
 };
 
-},{"./requests":59,"underscore":63}],59:[function(require,module,exports){
+},{"./requests":60,"underscore":64}],60:[function(require,module,exports){
 var rest = require('superagent');
 var crypto = require('crypto');
 
@@ -18415,7 +18854,7 @@ module.exports = {
   }
 };
 
-},{"crypto":12,"superagent":60}],60:[function(require,module,exports){
+},{"crypto":13,"superagent":61}],61:[function(require,module,exports){
 /**
  * Module dependencies.
  */
@@ -19498,7 +19937,7 @@ request.put = function(url, data, fn){
 
 module.exports = request;
 
-},{"emitter":61,"reduce":62}],61:[function(require,module,exports){
+},{"emitter":62,"reduce":63}],62:[function(require,module,exports){
 
 /**
  * Expose `Emitter`.
@@ -19664,7 +20103,7 @@ Emitter.prototype.hasListeners = function(event){
   return !! this.listeners(event).length;
 };
 
-},{}],62:[function(require,module,exports){
+},{}],63:[function(require,module,exports){
 
 /**
  * Reduce `arr` with `fn`.
@@ -19689,7 +20128,7 @@ module.exports = function(arr, fn, initial){
   
   return curr;
 };
-},{}],63:[function(require,module,exports){
+},{}],64:[function(require,module,exports){
 //     Underscore.js 1.5.2
 //     http://underscorejs.org
 //     (c) 2009-2013 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
@@ -20967,13 +21406,14 @@ module.exports = function(arr, fn, initial){
 
 }).call(this);
 
-},{}],64:[function(require,module,exports){
+},{}],65:[function(require,module,exports){
 (function (global){
 'use strict';
 
 var $ = global.jQuery = global.$ = require('jquery');
 require('bootstrap/dist/js/bootstrap');
 require('../../lib/jquery.visible');
+require('common-web');
 var Keen = require('keen.io');
 var cookie = require('cookie-cutter');
 var crypto = require('crypto');
@@ -21014,10 +21454,6 @@ $(function() {
 
       client.addEvent("web", data, cb);
     } else cb();
-  }
-
-  function addClickEvent(el, cb) {
-    addEvent("click", {el:el}, cb);
   }
 
   var session_key = 'my-house-session';
@@ -21082,18 +21518,15 @@ $(function() {
   // Pic scrolling
   $('.next-image').click(function() {
     if ($(images[images.length-1]).visible()) return false;
-    addClickEvent('next-image');
     return scroll.call(this);
   });
 
   $('.prev-image').click(function() {
     if ($(images[0]).visible()) return false;
-    addClickEvent('prev-image');
     return scroll.call(this);
   });
 
   function openMenu(sel) {
-    addClickEvent(sel);
     var $menu = $(sel);
     $('.nav-menu-open:not(' + sel + ')').removeClass('nav-menu-open');
     $menu.toggleClass('nav-menu-open');
@@ -21123,12 +21556,7 @@ $(function() {
   });
 
   $('.pics-menu').on('click', 'a', function(evt) {
-    addClickEvent($(evt.target).attr('href'));
     hideAllMenus();
-  });
-
-  $('.contact').click(function() {
-    addClickEvent('contact');
   });
 
   $('.info').click(function() {
@@ -21166,7 +21594,6 @@ $(function() {
                           'u=' + location.origin + location.pathname);
 
     $('.popup').click(function(event) {
-      addClickEvent(this.className);
       var width  = 575,
           height = 400,
           left   = ($(window).width()  - width)  / 2,
@@ -21191,7 +21618,15 @@ $(function() {
   });
 
   if (!queryString('unbranded')) $('.contact').show();
+
+  CommonWeb.Keen.Client = client;
+  CommonWeb.addGlobalProperties(CommonWeb.Keen.globalProperties);
+  CommonWeb.Callback = CommonWeb.Keen.Callback;
+  CommonWeb.trackSession();
+  CommonWeb.trackPageview();
+  CommonWeb.trackClicksPassive($('a, button'));
+  CommonWeb.trackInputChanges();
 });
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"../../lib/jquery.visible":1,"bootstrap/dist/js/bootstrap":2,"cookie-cutter":3,"crypto":12,"jquery":56,"keen.io":57}]},{},[64]);
+},{"../../lib/jquery.visible":1,"bootstrap/dist/js/bootstrap":2,"common-web":3,"cookie-cutter":4,"crypto":13,"jquery":57,"keen.io":58}]},{},[65]);

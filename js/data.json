@@ -1,6 +1,6 @@
 {
    "$": {
-      "xsi:schemaLocation": "http://www.zillow.com/static/xsd/SearchResults.xsd http://www.zillowstatic.com/vstatic/d4ac2a1/static/xsd/SearchResults.xsd",
+      "xsi:schemaLocation": "http://www.zillow.com/static/xsd/SearchResults.xsd http://www.zillowstatic.com/vstatic/fb78708/static/xsd/SearchResults.xsd",
       "xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
       "xmlns:SearchResults": "http://www.zillow.com/static/xsd/SearchResults.xsd"
    },
@@ -81,14 +81,14 @@
                         {
                            "amount": [
                               {
-                                 "_": "325611",
+                                 "_": "325942",
                                  "$": {
                                     "currency": "USD"
                                  }
                               }
                            ],
                            "last-updated": [
-                              "12/06/2015"
+                              "01/02/2016"
                            ],
                            "oneWeekChange": [
                               {
@@ -99,7 +99,7 @@
                            ],
                            "valueChange": [
                               {
-                                 "_": "-14172",
+                                 "_": "-2295",
                                  "$": {
                                     "duration": "30",
                                     "currency": "USD"
@@ -110,7 +110,7 @@
                               {
                                  "low": [
                                     {
-                                       "_": "267001",
+                                       "_": "264013",
                                        "$": {
                                           "currency": "USD"
                                        }
@@ -118,7 +118,7 @@
                                  ],
                                  "high": [
                                     {
-                                       "_": "390733",
+                                       "_": "436762",
                                        "$": {
                                           "currency": "USD"
                                        }
