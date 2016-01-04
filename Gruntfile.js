@@ -9,7 +9,7 @@ process.env.NODE_ENV = "development";
 var zwsid = "X1-ZWz1b18wrlizgr_14qhc";
 
 module.exports = function(grunt) {
-  
+
   grunt.initConfig({
     clean: {
       src: ["dist/*", "!dist/.git"]
@@ -26,7 +26,7 @@ module.exports = function(grunt) {
         }
       }
     },
-    
+
     copy: {
       all: {
         // This copies all the html, css and images into the dist/ folder
@@ -63,6 +63,7 @@ module.exports = function(grunt) {
         validthis: true,
         globals: {
           jQuery: true,
+          CommonWeb: true,
           chrome: true,
           console: false,
           localStorage: true,
@@ -75,7 +76,7 @@ module.exports = function(grunt) {
         }
       }
     },
-    
+
     haml: {
       // compile individually into dest, maintaining folder structure
       main: {
@@ -87,6 +88,7 @@ module.exports = function(grunt) {
 
     uglify: {
       options: {
+        mangle: false,
         sourceMap: true
       },
       js: {
@@ -138,7 +140,7 @@ module.exports = function(grunt) {
           cwd: 'dist/images',
           src: ['**/*.{png,jpg,gif}'],
           dest: 'dist/images/small'
-        }]        
+        }]
       }
     },
 
@@ -203,7 +205,7 @@ module.exports = function(grunt) {
       fs.writeFile('dist/js/data.json', JSON.stringify(result, null, 3), done);
     });
   });
-  
+
   grunt.registerTask('default', ['jshint', 'clean', 'browserify', 'copy', 'uglify', 'haml', 'image_resize', 'imagemin', 'zillow']);
-  grunt.registerTask('dist', ['prod_env', 'default', 'buildcontrol']);  
+  grunt.registerTask('dist', ['prod_env', 'default', 'buildcontrol']);
 };

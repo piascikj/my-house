@@ -18,6 +18,7 @@
   "homepage": "https://github.com/piascikj/my-house",
   "dependencies": {
     "bootstrap": "^3.2.0",
+    "common-web": "git+https://github.com/keen/common-web.git",
     "cookie-cutter": "^0.1.1",
     "font-awesome": "^4.2.0",
     "jquery": "^2.1.1",

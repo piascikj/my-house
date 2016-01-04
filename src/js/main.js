@@ -3,6 +3,7 @@
 var $ = global.jQuery = global.$ = require('jquery');
 require('bootstrap/dist/js/bootstrap');
 require('../../lib/jquery.visible');
+require('common-web');
 var Keen = require('keen.io');
 var cookie = require('cookie-cutter');
 var crypto = require('crypto');
@@ -43,10 +44,6 @@ $(function() {
 
       client.addEvent("web", data, cb);
     } else cb();
-  }
-
-  function addClickEvent(el, cb) {
-    addEvent("click", {el:el}, cb);
   }
 
   var session_key = 'my-house-session';
@@ -111,18 +108,15 @@ $(function() {
   // Pic scrolling
   $('.next-image').click(function() {
     if ($(images[images.length-1]).visible()) return false;
-    addClickEvent('next-image');
     return scroll.call(this);
   });
 
   $('.prev-image').click(function() {
     if ($(images[0]).visible()) return false;
-    addClickEvent('prev-image');
     return scroll.call(this);
   });
 
   function openMenu(sel) {
-    addClickEvent(sel);
     var $menu = $(sel);
     $('.nav-menu-open:not(' + sel + ')').removeClass('nav-menu-open');
     $menu.toggleClass('nav-menu-open');
@@ -152,12 +146,7 @@ $(function() {
   });
 
   $('.pics-menu').on('click', 'a', function(evt) {
-    addClickEvent($(evt.target).attr('href'));
     hideAllMenus();
-  });
-
-  $('.contact').click(function() {
-    addClickEvent('contact');
   });
 
   $('.info').click(function() {
@@ -195,7 +184,6 @@ $(function() {
                           'u=' + location.origin + location.pathname);
 
     $('.popup').click(function(event) {
-      addClickEvent(this.className);
       var width  = 575,
           height = 400,
           left   = ($(window).width()  - width)  / 2,
@@ -220,4 +208,12 @@ $(function() {
   });
 
   if (!queryString('unbranded')) $('.contact').show();
+
+  CommonWeb.Keen.Client = client;
+  CommonWeb.addGlobalProperties(CommonWeb.Keen.globalProperties);
+  CommonWeb.Callback = CommonWeb.Keen.Callback;
+  CommonWeb.trackSession();
+  CommonWeb.trackPageview();
+  CommonWeb.trackClicksPassive($('a, button'));
+  CommonWeb.trackInputChanges();
 });
