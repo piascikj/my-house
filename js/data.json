@@ -1,6 +1,6 @@
 {
    "$": {
-      "xsi:schemaLocation": "http://www.zillow.com/static/xsd/SearchResults.xsd http://www.zillowstatic.com/vstatic/fb78708/static/xsd/SearchResults.xsd",
+      "xsi:schemaLocation": "http://www.zillow.com/static/xsd/SearchResults.xsd http://www.zillowstatic.com/vstatic/1e72ba3/static/xsd/SearchResults.xsd",
       "xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
       "xmlns:SearchResults": "http://www.zillow.com/static/xsd/SearchResults.xsd"
    },
@@ -72,23 +72,38 @@
                         ""
                      ],
                      "useCode": [
-                        "Unknown"
+                        "SingleFamily"
+                     ],
+                     "yearBuilt": [
+                        "1873"
                      ],
                      "lotSizeSqFt": [
                         "1479733"
+                     ],
+                     "finishedSqFt": [
+                        "3627"
+                     ],
+                     "bathrooms": [
+                        "4.0"
+                     ],
+                     "bedrooms": [
+                        "4"
+                     ],
+                     "totalRooms": [
+                        "12"
                      ],
                      "zestimate": [
                         {
                            "amount": [
                               {
-                                 "_": "325942",
+                                 "_": "328743",
                                  "$": {
                                     "currency": "USD"
                                  }
                               }
                            ],
                            "last-updated": [
-                              "01/02/2016"
+                              "07/26/2016"
                            ],
                            "oneWeekChange": [
                               {
@@ -99,7 +114,7 @@
                            ],
                            "valueChange": [
                               {
-                                 "_": "-2295",
+                                 "_": "21762",
                                  "$": {
                                     "duration": "30",
                                     "currency": "USD"
@@ -110,7 +125,7 @@
                               {
                                  "low": [
                                     {
-                                       "_": "264013",
+                                       "_": "276144",
                                        "$": {
                                           "currency": "USD"
                                        }
@@ -118,7 +133,7 @@
                                  ],
                                  "high": [
                                     {
-                                       "_": "436762",
+                                       "_": "351755",
                                        "$": {
                                           "currency": "USD"
                                        }
